@@ -6,6 +6,7 @@ import util.Pos;
 public enum Propriedades {
 
     CASTELO(Construcao.class, new Dimensao(64, 48), new Dimensao(2, 1), 0, 0, 50),
+    CASTELO2(Construcao.class, new Dimensao(64, 64), new Dimensao(2, 2), 0, 0, 50),
     HUMANO(Humano.class, new Dimensao(12, 26), new Dimensao(1, 1), 5, 2, 20),
     ARVORE(EntidadeNeutra.class, new Dimensao(32, 32), new Dimensao(1, 1), 0, 0, 0);
     private Class tipo;
