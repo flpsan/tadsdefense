@@ -90,8 +90,10 @@ public class GerenteMapa {
         int ly = e.getLy();
         int largura = cx1 - cx0 + 1;
         int altura = cy1 - cy0 + 1;
-        int indice_x = e.getLx() - cx0;
-        int indice_y = e.getLy() - cy0;
+        int indice_xcima = e.getLx() - cx0;
+        int indice_ydireita = e.getLy() - cy0;
+        int indice_xbaixo = cx1 - e.getLx();
+        int indice_yesquerda = cy1 - e.getLy();
 
         int refV;
         if (ly < cy0) {
@@ -137,27 +139,28 @@ public class GerenteMapa {
         int i_diag1 = i_cima + largura;
         int i_direita = i_diag1 + 1;
         int i_diag2 = i_direita + altura;
-        int i_baixo = i_diag2 + largura;
+        int i_baixo = i_diag2 + 1;
         int i_diag3 = i_baixo + largura;
-        int i_esquerda = i_diag3 + altura;
+        int i_esquerda = i_diag3 + 1;
         int indice = 0;
         if (refH == 0 && refV == 0) {
             indice = i_diag0;
         } else if (refH == 1 && refV == 0) {
-            indice = i_cima + indice_x;
+            indice = i_cima + indice_xcima;
         } else if (refH == 2 && refV == 0) {
             indice = i_diag1;
         } else if (refH == 2 && refV == 1) {
-            indice = i_direita + indice_y;
+            indice = i_direita + indice_ydireita;
         } else if (refH == 2 && refV == 2) {
             indice = i_diag2;
         } else if (refH == 1 && refV == 2) {
-            indice = i_baixo - indice_x;
+            indice = i_baixo + indice_xbaixo;
         } else if (refH == 0 && refV == 2) {
             indice = i_diag3;
         } else {
-            indice = i_esquerda - indice_y;
+            indice = i_esquerda + indice_yesquerda;
         }
+        System.out.println(i_baixo + "-" + indice_xbaixo + "=" + indice);
 
         LinkedList<MapCell> listaOrdenada = new LinkedList();
         List<MapCell> lista0 = l.subList(indice, l.size());
