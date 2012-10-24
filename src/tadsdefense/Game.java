@@ -27,7 +27,7 @@ public class Game extends BasicGame {
     Construcao castelo;
     Rectangle boxSelecao;
     ArrayList<Humano> humanosSelecionados;
-    
+
     public Game() throws SlickException {
         super("TADS Defense");
     }
@@ -38,7 +38,7 @@ public class Game extends BasicGame {
         EntidadeNeutra arvore = new EntidadeNeutra(Propriedades.ARVORE, 2, 8);
         GerenteMapa.addEntidade(humano = new Humano(Propriedades.HUMANO, 1, 1, Time.A));
         GerenteMapa.addEntidade(humanoTeste = new Humano(Propriedades.HUMANO, 1, 5, Time.B));
-        GerenteMapa.addEntidade(humanoTeste2 = new Humano(Propriedades.HUMANO, 11, 10, Time.B));
+        GerenteMapa.addEntidade(humanoTeste2 = new Humano(Propriedades.HUMANO, 2, 5, Time.B));
         GerenteMapa.addEntidade(castelo = new Construcao(Propriedades.CASTELO, 1, 1, Time.A));
     }
 
@@ -113,14 +113,14 @@ public class Game extends BasicGame {
                     grphcs.setColor(Color.red);
                     grphcs.draw(alvo.getBox());
                 }
-                grphcs.setColor(Color.green);
-                for (MapCell[] m : e.getVisao()) {
-                    for (MapCell c : m) {
-                        if (c != null) {
-                            grphcs.fill(c.getBox());
-                        }
-                    }
-                }
+//                grphcs.setColor(Color.green);
+//                for (MapCell[] m : e.getVisao()) {
+//                    for (MapCell c : m) {
+//                        if (c != null) {
+//                            grphcs.fill(c.getBox());
+//                        }
+//                    }
+//                }
                 grphcs.setColor(Color.yellow);
                 grphcs.draw(e.getBox());
             }
@@ -131,15 +131,17 @@ public class Game extends BasicGame {
         for (MapCell[] m : GerenteMapa.getMap()) {
             for (MapCell cell : m) {
                 for (Entidade e : cell.getEntidades()) {
-                    e.draw();
-                    if (!(e instanceof EntidadeNeutra)) {
-                        grphcs.setColor(Color.black);
-                        grphcs.fill(e.getHpBoxFundo());
-                        grphcs.setColor(Color.yellow);
-                        grphcs.fill(e.getHpBox());
-                        if (e.getBox().contains(mx, my)) {
+                    if (e.getCurrentCell().equals(cell)) {
+                        e.draw();
+                        if (!(e instanceof EntidadeNeutra)) {
+                            grphcs.setColor(Color.black);
+                            grphcs.fill(e.getHpBoxFundo());
                             grphcs.setColor(Color.yellow);
-                            grphcs.draw(e.getBox());
+                            grphcs.fill(e.getHpBox());
+                            if (e.getBox().contains(mx, my)) {
+                                grphcs.setColor(Color.yellow);
+                                grphcs.draw(e.getBox());
+                            }
                         }
                     }
                 }
@@ -150,8 +152,7 @@ public class Game extends BasicGame {
         if (boxSelecao != null) {
             grphcs.draw(boxSelecao);
         }
-        
-        grphcs.setColor(Color.orange);
+
     }
 
     public static void main(String[] args) throws SlickException {

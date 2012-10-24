@@ -123,8 +123,6 @@ public class GerenteMapa {
 
         ArrayList<MapCell> l = new ArrayList();
 
-        //d0-cima-d1-direita-d2-baixo-d3-esquerda
-        //1-largura-1-altura-1-largura-1-altura
         l.add(d0);
         l.addAll(Arrays.asList(cima));
         l.add(d1);

@@ -19,16 +19,14 @@ public class Humano extends Entidade {
     public void animHandler() {
         int dir = getGerenteMov().getLastMove();
         boolean isMoving = getGerenteMov().isMoving();
-        if (getGerenteBatalha().isAtacando()) {
-            getGerenteAnimacao().troca(dir + 4);
-        } else {
+        if (!gerenteAnimacao.isAtacando()) {
             if (!isMoving) {
-                getGerenteAnimacao().pausa();
+                gerenteAnimacao.stop();
             } else if (lastDir != dir) {
-                getGerenteAnimacao().troca(dir);
+                gerenteAnimacao.troca(dir);
                 lastDir = dir;
             } else if (wasMoving != isMoving) {
-                getGerenteAnimacao().play();
+                gerenteAnimacao.play();
             }
         }
         wasMoving = isMoving;
@@ -41,12 +39,17 @@ public class Humano extends Entidade {
         getGerenteBatalha().update();
         if (getGerenteBatalha().isAtacando()) {
             Entidade alvo = getGerenteBatalha().getAtacando();
-            if (!GerenteMapa.podeAtacar(this, alvo) && getGerenteMov().getMovs().isEmpty()) {
-                if (alvo.getPropriedades().isBaseMultipla()){
-                    goTo(GerenteMapa.getCelulaMaisProxima(alvo.getCurrentCells(), this));
-                } else {
-                    goTo(GerenteMapa.getCelulaMaisProxima(alvo.getCurrentCell(), this));
-                }                
+            boolean podeAtacar = GerenteMapa.podeAtacar(this, alvo);
+            if (getGerenteMov().getMovs().isEmpty()) {
+                if (!podeAtacar) {
+                    if (alvo.getPropriedades().isBaseMultipla()) {
+                        goTo(GerenteMapa.getCelulaMaisProxima(alvo.getCurrentCells(), this));
+                    } else {
+                        goTo(GerenteMapa.getCelulaMaisProxima(alvo.getCurrentCell(), this));
+                    }
+                } else if (podeAtacar) {
+                    gerenteAnimacao.playAtaca();
+                }
             }
         }
     }
@@ -64,7 +67,15 @@ public class Humano extends Entidade {
         this.gerenteAnimacao = gerenteAnimacao;
     }
 
+    @Override
+    public void ataca(Entidade e) {
+        System.out.println(this.getPropriedades().name() + " ataca " + e.getPropriedades().name());
+        getGerenteBatalha().ataca(e);
+    }
+
+    @Override
     public void desataca() {
+        gerenteAnimacao.stopAtaca();
         getGerenteBatalha().desataca();
     }
 }

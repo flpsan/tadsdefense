@@ -87,7 +87,7 @@ public class GerenteBatalha {
         if (!isAtacando() && entidade.getTime() == Time.B && updateCont++ >= T_UPDATE_ENTIDADES) {
             updateInimigosAVista();
             if (!getEntidadesAVista().isEmpty()) {
-                ataca(getEntidadesAVista().getFirst());
+                entidade.ataca(getEntidadesAVista().getFirst());
             }
             updateCont = 0;
         }

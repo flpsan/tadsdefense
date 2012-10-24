@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package gerentes;
 
 import org.newdawn.slick.Animation;
@@ -19,15 +15,36 @@ public class GerenteAnimacao {
         currentAnim = indice;
     }
 
-    public void pausa() {
+    public void stop() {
         anims[currentAnim].stop();
     }
 
     public void play() {
         anims[currentAnim].start();
     }
-    
-    public Animation getAnimation(){
+
+    public Animation getAnimation() {
         return anims[currentAnim];
+    }
+
+    public void playAtaca() {
+        if (!isAtacando()) {
+            currentAnim = 4;
+        }
+    }
+
+    public boolean isAtacando() {
+        return currentAnim == 4;
+    }
+
+    public void stopAtaca() {
+        if (isAtacando()) {
+            currentAnim = 0;
+            stop();
+        }
+    }
+
+    public int getIndice() {
+        return currentAnim;
     }
 }
