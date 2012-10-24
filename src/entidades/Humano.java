@@ -43,10 +43,8 @@ public class Humano extends Entidade {
             Entidade alvo = getGerenteBatalha().getAtacando();
             if (!GerenteMapa.podeAtacar(this, alvo) && getGerenteMov().getMovs().isEmpty()) {
                 if (alvo.getPropriedades().isBaseMultipla()){
-                    System.out.println("goto1");
                     goTo(GerenteMapa.getCelulaMaisProxima(alvo.getCurrentCells(), this));
                 } else {
-                    System.out.println("goto2");
                     goTo(GerenteMapa.getCelulaMaisProxima(alvo.getCurrentCell(), this));
                 }                
             }

@@ -139,9 +139,9 @@ public class GerenteMapa {
         int i_diag1 = i_cima + largura;
         int i_direita = i_diag1 + 1;
         int i_diag2 = i_direita + altura;
-        int i_baixo = i_diag2 + 1;
+        int i_baixo = i_diag2 + largura;
         int i_diag3 = i_baixo + largura;
-        int i_esquerda = i_diag3 + 1;
+        int i_esquerda = i_diag3 + altura;
         int indice = 0;
         if (refH == 0 && refV == 0) {
             indice = i_diag0;
@@ -154,13 +154,12 @@ public class GerenteMapa {
         } else if (refH == 2 && refV == 2) {
             indice = i_diag2;
         } else if (refH == 1 && refV == 2) {
-            indice = i_baixo + indice_x;
+            indice = i_baixo - indice_x;
         } else if (refH == 0 && refV == 2) {
             indice = i_diag3;
         } else {
-            indice = i_esquerda + indice_y;
+            indice = i_esquerda - indice_y;
         }
-
 
         LinkedList<MapCell> listaOrdenada = new LinkedList();
         List<MapCell> lista0 = l.subList(indice, l.size());

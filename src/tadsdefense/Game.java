@@ -37,9 +37,9 @@ public class Game extends BasicGame {
         GerenteMapa.init();
         EntidadeNeutra arvore = new EntidadeNeutra(Propriedades.ARVORE, 2, 8);
         GerenteMapa.addEntidade(humano = new Humano(Propriedades.HUMANO, 1, 1, Time.A));
-        GerenteMapa.addEntidade(humanoTeste = new Humano(Propriedades.HUMANO, 10, 10, Time.B));
+        GerenteMapa.addEntidade(humanoTeste = new Humano(Propriedades.HUMANO, 1, 5, Time.B));
         GerenteMapa.addEntidade(humanoTeste2 = new Humano(Propriedades.HUMANO, 11, 10, Time.B));
-        GerenteMapa.addEntidade(castelo = new Construcao(Propriedades.CASTELO, 2, 2, Time.A));
+        GerenteMapa.addEntidade(castelo = new Construcao(Propriedades.CASTELO, 1, 1, Time.A));
     }
 
     @Override

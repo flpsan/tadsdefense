@@ -50,11 +50,9 @@ public abstract class Entidade {
         updateHpBoxWidth();
         setCurrentCell(GerenteMapa.getCell(lx, ly));
         if (propriedades.isBaseMultipla()) {
-            System.out.println(propriedades.name());
             int baseL = propriedades.getBaseLargura();
             int baseA = propriedades.getBaseAltura();
             currentCells = new MapCell[baseL][baseA];
-            System.out.println("");
             for (int i = 0; i < baseL; i++) {
                 for (int j = 0; j < baseA; j++) {
                     currentCells[i][j] = GerenteMapa.getCell(lx + i, ly + j);
@@ -208,6 +206,13 @@ public abstract class Entidade {
             e.desataca();
         }
         getCurrentCell().removeEntidade(this);
+        if (propriedades.isBaseMultipla()) {
+            for(MapCell[] x : currentCells){
+                for(MapCell cell : x){
+                    cell.removeEntidade(this);
+                }
+            }
+        }
     }
 
     public void setHp(int hp) {
