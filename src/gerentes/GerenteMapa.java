@@ -12,6 +12,7 @@ import java.util.Set;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.tiled.TiledMap;
+import sun.security.action.GetLongAction;
 import tadsdefense.Game;
 import tadsdefense.MapCell;
 
@@ -67,15 +68,26 @@ public class GerenteMapa {
     public static void setTiledMap(TiledMap aTiledMap) {
         tiledMap = aTiledMap;
     }
-    static ArrayList<MapCell> desenha = new ArrayList();
 
-    public static void getCelulaMaisProxima(MapCell[][] cells, Entidade e) {
-        int lx = e.getLx();
-        int ly = e.getLy();
+    public static MapCell getCelulaMaisProxima(MapCell cell, Entidade e) {
+        int cx0 = cell.getLx();
+        int cx1 = cell.getLx();
+        int cy0 = cell.getLy();
+        int cy1 = cell.getLy();
+        return getCelulaMaisProxima(cx0, cx1, cy0, cy1, e);
+    }
+
+    public static MapCell getCelulaMaisProxima(MapCell[][] cells, Entidade e) {
         int cx0 = cells[0][0].getLx();
         int cx1 = cells[cells.length - 1][0].getLx();
         int cy0 = cells[0][0].getLy();
         int cy1 = cells[0][cells[0].length - 1].getLy();
+        return getCelulaMaisProxima(cx0, cx1, cy0, cy1, e);
+    }
+
+    public static MapCell getCelulaMaisProxima(int cx0, int cx1, int cy0, int cy1, Entidade e) {
+        int lx = e.getLx();
+        int ly = e.getLy();
         int largura = cx1 - cx0 + 1;
         int altura = cy1 - cy0 + 1;
         int indice_x = e.getLx() - cx0;
@@ -108,6 +120,7 @@ public class GerenteMapa {
         MapCell d3 = getCell(cx0 - 1, cy1 + 1);
         MapCell[] esquerda = getVizinhos(3, cx0, cx1, cy0, cy1);
 
+
         ArrayList<MapCell> l = new ArrayList();
 
         //d0-cima-d1-direita-d2-baixo-d3-esquerda
@@ -122,31 +135,32 @@ public class GerenteMapa {
         l.addAll(Arrays.asList(esquerda));
 
         int i_diag0 = 0;
-        int i_cima = i_diag0 + 1 + indice_x;
+        int i_cima = i_diag0 + 1;
         int i_diag1 = i_cima + largura;
-        int i_direita = i_diag1 + 1 + indice_y;
+        int i_direita = i_diag1 + 1;
         int i_diag2 = i_direita + altura;
-        int i_baixo = i_diag2 + 1 + indice_x;
+        int i_baixo = i_diag2 + 1;
         int i_diag3 = i_baixo + largura;
-        int i_esquerda = i_diag3 + 1 + indice_y;
+        int i_esquerda = i_diag3 + 1;
         int indice = 0;
         if (refH == 0 && refV == 0) {
             indice = i_diag0;
         } else if (refH == 1 && refV == 0) {
-            indice = i_cima;
+            indice = i_cima + indice_x;
         } else if (refH == 2 && refV == 0) {
             indice = i_diag1;
         } else if (refH == 2 && refV == 1) {
-            indice = i_direita;
+            indice = i_direita + indice_y;
         } else if (refH == 2 && refV == 2) {
             indice = i_diag2;
         } else if (refH == 1 && refV == 2) {
-            indice = i_baixo;
+            indice = i_baixo + indice_x;
         } else if (refH == 0 && refV == 2) {
             indice = i_diag3;
         } else {
-            indice = i_esquerda;
+            indice = i_esquerda + indice_y;
         }
+
 
         LinkedList<MapCell> listaOrdenada = new LinkedList();
         List<MapCell> lista0 = l.subList(indice, l.size());
@@ -159,9 +173,15 @@ public class GerenteMapa {
         for (int i = 0; i < size; i++) {
             listaFinal.add(listaOrdenada.remove((i % 2 == 0) ? 0 : listaOrdenada.size() - 1));
         }
+
         for (MapCell cell : listaFinal) {
-            System.out.println(cell.getLx() + "," + cell.getLy());
+            if (cell != null) {
+                if (cell.isCaminhavel(e)) {
+                    return cell;
+                }
+            }
         }
+        return null;
 
 
     }
@@ -199,31 +219,6 @@ public class GerenteMapa {
             }
         }
         return vizinhos;
-    }
-    /*
-     * Busca a celula vizinha mais proxima de 'cell' e que seja possivel de movimento 
-     */
-
-    public static MapCell getVizinhoWalkable(MapCell cell, Entidade e) {
-        int lx = cell.getLx();
-        int ly = cell.getLy();
-        MapCell[] vizinhos = {
-            getCell(lx, ly - 1),
-            getCell(lx + 1, ly),
-            getCell(lx, ly + 1),
-            getCell(lx - 1, ly)
-        };
-        if (e.getLy() < ly && vizinhos[0].isCaminhavel(e) && vizinhos[0] != null) {
-            return vizinhos[0];
-        } else if (e.getLy() > ly && vizinhos[2].isCaminhavel(e) && vizinhos[2] != null) {
-            return vizinhos[2];
-        } else if (e.getLx() < lx && vizinhos[3].isCaminhavel(e) && vizinhos[3] != null) {
-            return vizinhos[3];
-        } else if (vizinhos[1].isCaminhavel(e) && vizinhos[1] != null) {
-            return vizinhos[1];
-        } else {
-            return null;
-        }
     }
 
     public static ArrayList<Humano> getHumanosSelecionados(Rectangle boxSelecao) {
@@ -267,5 +262,42 @@ public class GerenteMapa {
 
     public static void addEntidade(Entidade e) {
         allEntidades.add(e);
+    }
+
+    private static int distComp(MapCell cell0, Entidade e) {
+        int d = Integer.MAX_VALUE;
+        for (MapCell[] x : e.getCurrentCells()) {
+            for (MapCell cell1 : x) {
+                int dist = getDistancia(cell0, cell1);
+                if (dist < d) {
+                    d = dist;
+                }
+            }
+        }
+        return d;
+    }
+
+    public static boolean podeAtacar(Entidade e0, Entidade e1) {
+        boolean e0multipla = e0.getPropriedades().isBaseMultipla();
+        boolean e1multipla = e1.getPropriedades().isBaseMultipla();
+        int d = Integer.MAX_VALUE;
+        if (e0multipla ^ e1multipla) {
+            MapCell cell = e0multipla ? e1.getCurrentCell() : e0.getCurrentCell();
+            Entidade e = e0multipla ? e0 : e1;
+            d = distComp(cell, e);
+        } else if (e0multipla && e1multipla) {
+            for (MapCell[] x : e0.getCurrentCells()) {
+                for (MapCell e0cell : x) {
+                    int dist = distComp(e0cell, e1);
+                    if (dist < d) {
+                        d = dist;
+                    }
+                }
+            }
+
+        } else {
+            d = getDistancia(e0.getCurrentCell(), e1.getCurrentCell());
+        }
+        return (d == 1) || (d == 2 && e0.getLx() != e1.getLx() && e0.getLy() != e1.getLy());
     }
 }

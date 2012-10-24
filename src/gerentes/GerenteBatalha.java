@@ -79,8 +79,7 @@ public class GerenteBatalha {
 
     public void update() {
         if (isAtacando()) {
-            int distancia = GerenteMapa.getDistancia(entidade.getCurrentCell(), getAtacando().getCurrentCell());
-            if (distancia <= 1 && roundsCont++ > roundsToAttack) {
+            if (GerenteMapa.podeAtacar(entidade, getAtacando()) && roundsCont++ > roundsToAttack) {
                 getAtacando().hit(1);
                 roundsCont = 0;
             }

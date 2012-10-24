@@ -40,12 +40,17 @@ public class Humano extends Entidade {
         animHandler();
         getGerenteBatalha().update();
         if (getGerenteBatalha().isAtacando()) {
-            int distancia = GerenteMapa.getDistancia(getCurrentCell(), getGerenteBatalha().getAtacando().getCurrentCell());
-            if (distancia > 1 && getGerenteMov().getMovs().isEmpty()) {
-                goTo(GerenteMapa.getVizinhoWalkable(getGerenteBatalha().getAtacando().getCurrentCell(), this));
+            Entidade alvo = getGerenteBatalha().getAtacando();
+            if (!GerenteMapa.podeAtacar(this, alvo) && getGerenteMov().getMovs().isEmpty()) {
+                if (alvo.getPropriedades().isBaseMultipla()){
+                    System.out.println("goto1");
+                    goTo(GerenteMapa.getCelulaMaisProxima(alvo.getCurrentCells(), this));
+                } else {
+                    System.out.println("goto2");
+                    goTo(GerenteMapa.getCelulaMaisProxima(alvo.getCurrentCell(), this));
+                }                
             }
         }
-
     }
 
     @Override

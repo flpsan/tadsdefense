@@ -35,12 +35,11 @@ public class Game extends BasicGame {
     @Override
     public void init(GameContainer gc) throws SlickException {
         GerenteMapa.init();
-        EntidadeNeutra arvore = new EntidadeNeutra(Propriedades.ARVORE, 8, 8);
+        EntidadeNeutra arvore = new EntidadeNeutra(Propriedades.ARVORE, 2, 8);
         GerenteMapa.addEntidade(humano = new Humano(Propriedades.HUMANO, 1, 1, Time.A));
         GerenteMapa.addEntidade(humanoTeste = new Humano(Propriedades.HUMANO, 10, 10, Time.B));
         GerenteMapa.addEntidade(humanoTeste2 = new Humano(Propriedades.HUMANO, 11, 10, Time.B));
         GerenteMapa.addEntidade(castelo = new Construcao(Propriedades.CASTELO, 2, 2, Time.A));
-        GerenteMapa.getCelulaMaisProxima(castelo.getCurrentCells(),humano);
     }
 
     @Override
