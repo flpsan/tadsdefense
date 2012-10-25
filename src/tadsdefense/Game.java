@@ -24,7 +24,10 @@ public class Game extends BasicGame {
     Humano humano;
     Humano humanoTeste;
     Humano humanoTeste2;
-    Construcao castelo2;
+    Construcao castelo;
+    Construcao torre;
+    Construcao barracks;
+    Construcao catapulta;
     Rectangle boxSelecao;
     ArrayList<Humano> humanosSelecionados;
 
@@ -39,7 +42,10 @@ public class Game extends BasicGame {
         GerenteMapa.addEntidade(humano = new Humano(Propriedades.HUMANO, 1, 1, Time.A));
         GerenteMapa.addEntidade(humanoTeste = new Humano(Propriedades.HUMANO, 1, 5, Time.B));
         GerenteMapa.addEntidade(humanoTeste2 = new Humano(Propriedades.HUMANO, 2, 5, Time.B));
-        GerenteMapa.addEntidade(castelo2 = new Construcao(Propriedades.CASTELO2, 5, 5, Time.A));
+        GerenteMapa.addEntidade(castelo = new Construcao(Propriedades.CASTELO, 5, 5, Time.A));
+        GerenteMapa.addEntidade(catapulta = new Construcao(Propriedades.CATAPULTA, 5, 3, Time.A));
+        GerenteMapa.addEntidade(torre = new Construcao(Propriedades.TORRE, 5, 9, Time.A));
+        GerenteMapa.addEntidade(barracks = new Construcao(Propriedades.BARRACKS, 8, 9, Time.A));
     }
 
     @Override

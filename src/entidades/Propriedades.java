@@ -5,8 +5,10 @@ import util.Pos;
 
 public enum Propriedades {
 
-    CASTELO(Construcao.class, new Dimensao(64, 48), new Dimensao(2, 1), 0, 0, 50),
-    CASTELO2(Construcao.class, new Dimensao(64, 64), new Dimensao(2, 2), 0, 0, 50),
+    CASTELO(Construcao.class, new Dimensao(96, 96), new Dimensao(3, 2), 0, 0, 50),
+    CATAPULTA(Construcao.class, new Dimensao(29, 21), new Dimensao(1, 1), 0, 0, 50),
+    TORRE(Construcao.class, new Dimensao(40, 64), new Dimensao(1, 1), 0, 0, 50),
+    BARRACKS(Construcao.class, new Dimensao(72, 42), new Dimensao(2, 1), 0, 0, 50),
     HUMANO(Humano.class, new Dimensao(12, 26), new Dimensao(1, 1), 5, 2, 20),
     ARVORE(EntidadeNeutra.class, new Dimensao(32, 32), new Dimensao(1, 1), 0, 0, 0);
     private Class tipo;
@@ -54,11 +56,11 @@ public enum Propriedades {
     }
 
     public boolean isImagemMaiorQueBase() {
-        return (getAltura()>getBaseAltura()*32) || (getLargura()>getBaseLargura()*32);
+        return (getAltura() > getBaseAltura() * 32) || (getLargura() > getBaseLargura() * 32);
     }
-    
-    public boolean isBaseMultipla(){
-        return (getBaseAltura()>1 || getBaseLargura()>1);
+
+    public boolean isBaseMultipla() {
+        return (getBaseAltura() > 1 || getBaseLargura() > 1);
     }
 
     public int getAltura() {
@@ -68,7 +70,7 @@ public enum Propriedades {
     public int getLargura() {
         return tamanho.getLargura();
     }
-    
+
     public int getBaseAltura() {
         return tamanhoBase.getAltura();
     }
@@ -76,6 +78,4 @@ public enum Propriedades {
     public int getBaseLargura() {
         return tamanhoBase.getLargura();
     }
-    
-    
 }

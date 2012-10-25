@@ -18,7 +18,10 @@ public class Construcao extends Entidade {
     @Override
     public void draw() {
         if (getPropriedades().isImagemMaiorQueBase()) {
-            sprite.draw(getX(), getY()-getPropriedades().getTamanho().getAltura()+Util.TILE_HEIGHT);
+            int largura = getPropriedades().getLargura();
+            int baseLargura = getPropriedades().getBaseLargura()*Util.TILE_WIDTH;
+            int baseAltura = Util.TILE_HEIGHT*getPropriedades().getBaseAltura();
+            sprite.draw(getX()-(largura-baseLargura)/2, getY()-getPropriedades().getTamanho().getAltura()+baseAltura);
         } else {
             sprite.draw(getX(), getY());
         }
