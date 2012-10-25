@@ -27,9 +27,9 @@ public class GerenteAnimacao {
         return anims[currentAnim];
     }
 
-    public void playAtaca() {
+    public void playAtaca(int ladoAlvo) {
         if (!isAtacando()) {
-            currentAnim = 4;
+            currentAnim = 4+ladoAlvo;
         }
     }
 

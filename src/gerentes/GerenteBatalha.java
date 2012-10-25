@@ -121,4 +121,8 @@ public class GerenteBatalha {
     public void setEntidadesAVista(LinkedList<Entidade> entidadesAVista) {
         this.entidadesAVista = entidadesAVista;
     }
+
+    public int getLadoAlvo() {
+        return GerenteMapa.viradoPara(entidade, atacando);
+    }
 }

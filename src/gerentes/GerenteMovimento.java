@@ -151,8 +151,7 @@ public class GerenteMovimento {
                 boolean isCaminhoOk = GerenteMapa.isCaminhoOk(getMovs(), entidade);
                 boolean isAlvoOk = GerenteMapa.getCell(lastPathfAlvoLx, lastPathfAlvoLy).isCaminhavel(entidade);
                 if (!isAlvoOk) {
-                    System.out.println("repath");
-                    rePathfind(GerenteMapa.getCelulaMaisProxima(GerenteMapa.getCell(lastPathfAlvoLx, lastPathfAlvoLy), entidade));
+                    rePathfind(GerenteMapa.getCelulaMaisProxima(entidade,GerenteMapa.getLimitesDaCelula(GerenteMapa.getCell(lastPathfAlvoLx, lastPathfAlvoLy))));
                 } else if (!isCaminhoOk) {
                     rePathfind();
                 } else {

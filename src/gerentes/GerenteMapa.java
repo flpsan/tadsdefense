@@ -15,6 +15,7 @@ import org.newdawn.slick.tiled.TiledMap;
 import sun.security.action.GetLongAction;
 import tadsdefense.Game;
 import tadsdefense.MapCell;
+import util.Pos;
 
 public class GerenteMapa {
 
@@ -69,33 +70,40 @@ public class GerenteMapa {
         tiledMap = aTiledMap;
     }
 
-    public static MapCell getCelulaMaisProxima(MapCell cell, Entidade e) {
-        int cx0 = cell.getLx();
-        int cx1 = cell.getLx();
-        int cy0 = cell.getLy();
-        int cy1 = cell.getLy();
-        return getCelulaMaisProxima(cx0, cx1, cy0, cy1, e);
+    public static MapCell getCelulaMaisProxima(Entidade queAtaca, Entidade alvo) {
+        return getCelulaMaisProxima(queAtaca, getLimitesDaEntidade(alvo));
     }
 
-    public static MapCell getCelulaMaisProxima(MapCell[][] cells, Entidade e) {
-        int cx0 = cells[0][0].getLx();
-        int cx1 = cells[cells.length - 1][0].getLx();
-        int cy0 = cells[0][0].getLy();
-        int cy1 = cells[0][cells[0].length - 1].getLy();
-        return getCelulaMaisProxima(cx0, cx1, cy0, cy1, e);
+    public static int[] getLimitesDaEntidade(Entidade e) {
+        int cx0, cx1, cy0, cy1;
+        if (e.getPropriedades().isBaseMultipla()) {
+            MapCell[][] cells = e.getCurrentCells();
+            cx0 = cells[0][0].getLx();
+            cx1 = cells[cells.length - 1][0].getLx();
+            cy0 = cells[0][0].getLy();
+            cy1 = cells[0][cells[0].length - 1].getLy();
+        } else {
+            MapCell cell = e.getCurrentCell();
+            cx0 = cell.getLx();
+            cx1 = cell.getLx();
+            cy0 = cell.getLy();
+            cy1 = cell.getLy();
+        }
+        return new int[]{cx0, cx1, cy0, cy1};
     }
 
-    public static MapCell getCelulaMaisProxima(int cx0, int cx1, int cy0, int cy1, Entidade e) {
+    public static int[] getLimitesDaCelula(MapCell cell) {
+         return new int[]{cell.getLx(), cell.getLx(), cell.getLy(), cell.getLy()};
+    }
+
+    public static Pos getPosicaoReferencia(Entidade e, int[] limites) {
+        int refV, refH;
+        int cx0 = limites[0];
+        int cx1 = limites[1];
+        int cy0 = limites[2];
+        int cy1 = limites[3];
         int lx = e.getLx();
         int ly = e.getLy();
-        int largura = cx1 - cx0 + 1;
-        int altura = cy1 - cy0 + 1;
-        int indice_xcima = e.getLx() - cx0;
-        int indice_ydireita = e.getLy() - cy0;
-        int indice_xbaixo = cx1 - e.getLx();
-        int indice_yesquerda = cy1 - e.getLy();
-
-        int refV;
         if (ly < cy0) {
             refV = 0;
         } else if (ly > cy1) {
@@ -103,7 +111,6 @@ public class GerenteMapa {
         } else {
             refV = 1;
         }
-        int refH;
         if (lx < cx0) {
             refH = 0;
         } else if (lx > cx1) {
@@ -111,6 +118,22 @@ public class GerenteMapa {
         } else {
             refH = 1;
         }
+        return new Pos(refH, refV);
+    }
+
+    public static MapCell getCelulaMaisProxima(Entidade e, int[] limites) {
+        int cx0 = limites[0];
+        int cx1 = limites[1];
+        int cy0 = limites[2];
+        int cy1 = limites[3];
+        int largura = cx1 - cx0 + 1;
+        int altura = cy1 - cy0 + 1;
+        int indice_xcima = e.getLx() - cx0;
+        int indice_ydireita = e.getLy() - cy0;
+        int indice_xbaixo = cx1 - e.getLx();
+        int indice_yesquerda = cy1 - e.getLy();
+
+
 
         //Vizinhos
         MapCell d0 = getCell(cx0 - 1, cy0 - 1);
@@ -143,6 +166,11 @@ public class GerenteMapa {
         int i_diag3 = i_baixo + largura;
         int i_esquerda = i_diag3 + 1;
         int indice = 0;
+
+        Pos posRef = getPosicaoReferencia(e, limites);
+        int refH = posRef.getX();
+        int refV = posRef.getY();
+
         if (refH == 0 && refV == 0) {
             indice = i_diag0;
         } else if (refH == 1 && refV == 0) {
@@ -160,7 +188,6 @@ public class GerenteMapa {
         } else {
             indice = i_esquerda + indice_yesquerda;
         }
-        System.out.println(i_baixo + "-" + indice_xbaixo + "=" + indice);
 
         LinkedList<MapCell> listaOrdenada = new LinkedList();
         List<MapCell> lista0 = l.subList(indice, l.size());
@@ -299,5 +326,22 @@ public class GerenteMapa {
             d = getDistancia(e0.getCurrentCell(), e1.getCurrentCell());
         }
         return (d == 1) || (d == 2 && e0.getLx() != e1.getLx() && e0.getLy() != e1.getLy());
+    }
+
+    public static int viradoPara(Entidade queAtaca, Entidade atacada) {
+        Pos posRef = getPosicaoReferencia(queAtaca, getLimitesDaEntidade(atacada));
+        int refH = posRef.getX();
+        int refV = posRef.getY();
+
+        if (refV == 0) {
+            return 0;
+        } else if (refV == 2) {
+            return 2;
+        } else if (refH == 1) {
+            return 1;
+        } else {
+            return 3;
+        }
+
     }
 }
