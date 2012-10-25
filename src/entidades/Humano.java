@@ -42,9 +42,13 @@ public class Humano extends Entidade {
             boolean podeAtacar = GerenteMapa.podeAtacar(this, alvo);
             if (getGerenteMov().getMovs().isEmpty()) {
                 if (!podeAtacar) {
-                    goTo(GerenteMapa.getCelulaMaisProxima(this,alvo));
+                    if (alvo.getPropriedades().isBaseMultipla()) {
+                        goTo(GerenteMapa.getCelulaMaisProxima(alvo.getCurrentCells(), this));
+                    } else {
+                        goTo(GerenteMapa.getCelulaMaisProxima(alvo.getCurrentCell(), this));
+                    }
                 } else if (podeAtacar) {
-                    gerenteAnimacao.playAtaca(getGerenteBatalha().getLadoAlvo());
+                    gerenteAnimacao.playAtaca();
                 }
             }
         }
@@ -65,6 +69,7 @@ public class Humano extends Entidade {
 
     @Override
     public void ataca(Entidade e) {
+        System.out.println(this.getPropriedades().name() + " ataca " + e.getPropriedades().name());
         getGerenteBatalha().ataca(e);
     }
 
