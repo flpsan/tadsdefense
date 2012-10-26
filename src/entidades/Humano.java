@@ -2,7 +2,9 @@ package entidades;
 
 import gerentes.GerenteAnimacao;
 import gerentes.GerenteMapa;
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
 import util.Util;
 
 public class Humano extends Entidade {
@@ -11,8 +13,10 @@ public class Humano extends Entidade {
 
     public Humano(Propriedades propriedades, int lx, int ly, Time time) throws SlickException {
         super(propriedades, lx, ly, false, time, true);
-        setGerenteAnimacao(new GerenteAnimacao(Util.geraHumanoAnims(propriedades.getResDir())));
+        gerenteAnimacao = new GerenteAnimacao(Util.geraHumanoAnims(propriedades.getDirSpriteOriginal()));
+        gerenteAnimacao.setHitAnim(new Animation(new SpriteSheet("res/hitHumano.png", 15, 15), 150));
     }
+    
     private int lastDir;
     private boolean wasMoving;
 
@@ -42,9 +46,8 @@ public class Humano extends Entidade {
             boolean podeAtacar = GerenteMapa.podeAtacar(this, alvo);
             if (getGerenteMov().getMovs().isEmpty()) {
                 if (!podeAtacar) {
-                    goTo(GerenteMapa.getCelulaMaisProxima(this,alvo));
+                    goTo(GerenteMapa.getCelulaMaisProxima(this, alvo));
                 } else if (podeAtacar) {
-                    System.out.println("teste");
                     gerenteAnimacao.playAtaca(getGerenteBatalha().getLadoAlvo());
                 }
             }
@@ -53,16 +56,12 @@ public class Humano extends Entidade {
 
     @Override
     public void draw() {
-        getGerenteAnimacao().getAnimation().draw(getX(), getY());
+        gerenteAnimacao.getAnimation().draw(getX(), getY());
+        if (gerenteAnimacao.getHitAnim()!=null && !gerenteAnimacao.getHitAnim().isStopped()) {
+            gerenteAnimacao.getHitAnim().draw(getX(), getY());
+        }
     }
 
-    private GerenteAnimacao getGerenteAnimacao() {
-        return gerenteAnimacao;
-    }
-
-    private void setGerenteAnimacao(GerenteAnimacao gerenteAnimacao) {
-        this.gerenteAnimacao = gerenteAnimacao;
-    }
 
     @Override
     public void ataca(Entidade e) {
@@ -74,10 +73,10 @@ public class Humano extends Entidade {
         gerenteAnimacao.stopAtaca();
         getGerenteBatalha().desataca();
     }
-    
+
     @Override
-    public void hit(int hit){
+    public void hit(int hit) {
         super.hit(hit);
-        System.out.println("teste");
+        gerenteAnimacao.playHitAnim();
     }
 }

@@ -47,8 +47,12 @@ public enum Propriedades {
         return hp;
     }
 
-    public String getResDir() {
+    public String getDirSpriteOriginal() {
         return "res/" + this.name().toLowerCase() + ".png";
+    }
+    
+    public String getDirSpriteDetonado() {
+        return "res/" + this.name().toLowerCase() + "_detonado.png";
     }
 
     public Dimensao getTamanhoBase() {

@@ -11,7 +11,7 @@ public class EntidadeNeutra extends Entidade {
 
     public EntidadeNeutra(Propriedades propriedades, int lx, int ly) throws SlickException {
         super(propriedades, lx, ly, true, Time.NEUTRO, false);
-        sprite = new Image(propriedades.getResDir());
+        sprite = new Image(propriedades.getDirSpriteOriginal());
     }
 
     @Override

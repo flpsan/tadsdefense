@@ -6,6 +6,7 @@ public class GerenteAnimacao {
 
     private int currentAnim = 0;
     private Animation[] anims;
+    private Animation hitAnim;
 
     public GerenteAnimacao(Animation[] anims) {
         this.anims = anims;
@@ -46,5 +47,22 @@ public class GerenteAnimacao {
 
     public int getIndice() {
         return currentAnim;
+    }
+
+    public void playHitAnim() {
+        if (getHitAnim().isStopped()){
+            getHitAnim().restart();
+        }
+    }
+
+
+    public Animation getHitAnim() {
+        return hitAnim;
+    }
+
+    public void setHitAnim(Animation hitAnim) {
+        this.hitAnim = hitAnim;
+        hitAnim.setLooping(false);
+        hitAnim.stop();
     }
 }
