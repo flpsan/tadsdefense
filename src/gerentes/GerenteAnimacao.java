@@ -29,17 +29,17 @@ public class GerenteAnimacao {
     }
 
     public void playAtaca(int ladoAlvo) {
-        if (!isAtacando()) {
+        if (!isPlayingAtk()) {
             currentAnim = 4+ladoAlvo;
         }
     }
 
-    public boolean isAtacando() {
+    public boolean isPlayingAtk() {
         return currentAnim >= 4;
     }
 
     public void stopAtaca() {
-        if (isAtacando()) {
+        if (isPlayingAtk()) {
             currentAnim = 0;
             stop();
         }

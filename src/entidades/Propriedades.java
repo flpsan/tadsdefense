@@ -7,7 +7,7 @@ public enum Propriedades {
 
     CASTELO(Construcao.class, new Dimensao(96, 96), new Dimensao(3, 2), 0, 0, 50, 1, 1),
     CATAPULTA(Construcao.class, new Dimensao(29, 21), new Dimensao(1, 1), 0, 0, 50, 1, 1),
-    TORRE(Construcao.class, new Dimensao(40, 64), new Dimensao(1, 1), 0, 0, 50, 2, 1),
+    TORRE(Construcao.class, new Dimensao(40, 64), new Dimensao(1, 1), 0, 0, 50, 2, 3),
     BARRACKS(Construcao.class, new Dimensao(72, 42), new Dimensao(2, 1), 0, 0, 50, 1, 1),
     HUMANO(Humano.class, new Dimensao(12, 26), new Dimensao(1, 1), 5, 2, 20, -1, -1),
     ARVORE(EntidadeNeutra.class, new Dimensao(32, 32), new Dimensao(1, 1), 0, 0, 0, -1, -1);

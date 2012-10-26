@@ -23,7 +23,7 @@ public class Humano extends Entidade {
     public void animHandler() {
         int dir = getGerenteMov().getLastMove();
         boolean isMoving = getGerenteMov().isMoving();
-        if (!gerenteAnimacao.isAtacando()) {
+        if (!gerenteAnimacao.isPlayingAtk()) {
             if (!isMoving) {
                 gerenteAnimacao.stop();
             } else if (lastDir != dir) {
@@ -32,6 +32,8 @@ public class Humano extends Entidade {
             } else if (wasMoving != isMoving) {
                 gerenteAnimacao.play();
             }
+        } else if (getGerenteBatalha().isDoLadoDoAlvo()) {
+            gerenteAnimacao.playAtaca(GerenteMapa.viradoPara(this, getGerenteBatalha().getAtacando()));
         }
         wasMoving = isMoving;
     }
@@ -41,17 +43,6 @@ public class Humano extends Entidade {
         super.update();
         animHandler();
         getGerenteBatalha().update();
-        if (getGerenteBatalha().isAtacando()) {
-            Entidade alvo = getGerenteBatalha().getAtacando();
-            boolean podeAtacar = GerenteMapa.podeAtacar(this, alvo);
-            if (getGerenteMov().getMovs().isEmpty()) {
-                if (!podeAtacar) {
-                    goTo(GerenteMapa.getCelulaMaisProxima(this, alvo));
-                } else if (podeAtacar) {
-                    gerenteAnimacao.playAtaca(getGerenteBatalha().getLadoAlvo());
-                }
-            }
-        }
     }
 
     @Override

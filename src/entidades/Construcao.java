@@ -61,14 +61,18 @@ public class Construcao extends Entidade {
     }
 
     private void setConstruindoSprite() {
-        double n = 1 / (double)getPropriedades().getnConstSprites();
-        int i = (int)(getHpPercent()/n);
+        double n = 1 / (double) getPropriedades().getnConstSprites();
+        int i = (int) (getHpPercent() / n);
         setSprite(construcao.getSprite(i, 0));
-
     }
 
     private void setDetonadoSprite() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        double n = 1 / (double) (getPropriedades().getnDetonSprites()+1);
+        System.out.println(n+"-"+getHpPercent());
+        if (getHpPercent() < 1.0 - n) {
+            int i = (int) (getHpPercent() / n);
+            setSprite(detonado.getSprite(i, 0));
+        }
     }
 
     private void setSprite(Image s) {

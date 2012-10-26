@@ -18,6 +18,7 @@ public class GerenteBatalha {
     private int raioVisao;
     private MapCell[][] visao;
     private LinkedList<Entidade> entidadesAVista;
+    private boolean doLadoDoAlvo;
 
     public GerenteBatalha(Entidade entidade, int roundsToAttack, int raioVisao) {
         this.atacadoPor = new LinkedList();
@@ -26,6 +27,7 @@ public class GerenteBatalha {
         this.raioVisao = raioVisao;
         this.visao = new MapCell[1 + raioVisao * 2][1 + raioVisao * 2];
         this.entidadesAVista = new LinkedList();
+        this.doLadoDoAlvo = false;
     }
 
     public void ataca(Entidade e) {
@@ -41,6 +43,7 @@ public class GerenteBatalha {
     public void desataca() {
         if (atacando != null) {
             atacando = null;
+            doLadoDoAlvo = false;
         }
     }
 
@@ -79,11 +82,16 @@ public class GerenteBatalha {
 
     public void update() {
         if (isAtacando()) {
-            if (GerenteMapa.podeAtacar(entidade, getAtacando()) && roundsCont++ > roundsToAttack) {
+            if (doLadoDoAlvo = GerenteMapa.podeAtacar(entidade, atacando) && roundsCont++ > roundsToAttack) {
                 getAtacando().hit(1);
                 roundsCont = 0;
+            } else {
+                if (entidade.getGerenteMov().getMovs().isEmpty()) {
+                    entidade.goTo(GerenteMapa.getCelulaMaisProxima(entidade, atacando));
+                }
             }
         }
+
         if (!isAtacando() && entidade.getTime() == Time.B && updateCont++ >= T_UPDATE_ENTIDADES) {
             updateInimigosAVista();
             if (!getEntidadesAVista().isEmpty()) {
@@ -124,5 +132,9 @@ public class GerenteBatalha {
 
     public int getLadoAlvo() {
         return GerenteMapa.viradoPara(entidade, atacando);
+    }
+
+    public boolean isDoLadoDoAlvo() {
+        return doLadoDoAlvo;
     }
 }
