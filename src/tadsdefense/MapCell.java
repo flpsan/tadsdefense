@@ -38,13 +38,12 @@ public class MapCell {
             pos[h.getCellPos()] = null;
         }
     }
-    public static final int MAX_HUMANOS = 3;
+    public static final int MAX_HUMANOS = 1;
     private int lx;
     private int ly;
     private Rectangle box;
     private LinkedList<Entidade> entidades;
     private GerentePosicionamento gerentePos;
-    private Entidade entidadeVirtual;
 
     public MapCell(int lx, int ly) {
         this.box = new Rectangle(lx * Util.TILE_WIDTH, ly * Util.TILE_HEIGHT, Util.TILE_WIDTH, Util.TILE_HEIGHT);

@@ -38,7 +38,6 @@ public class Game extends BasicGame {
     @Override
     public void init(GameContainer gc) throws SlickException {
         GerenteMapa.init();
-        EntidadeNeutra arvore = new EntidadeNeutra(Propriedades.ARVORE, 2, 8);
         GerenteMapa.addEntidade(humano = new Humano(Propriedades.HUMANO, 1, 1, Time.A));
         GerenteMapa.addEntidade(humanoTeste = new Humano(Propriedades.HUMANO, 1, 5, Time.B));
         GerenteMapa.addEntidade(humanoTeste2 = new Humano(Propriedades.HUMANO, 2, 5, Time.B));
@@ -106,6 +105,13 @@ public class Game extends BasicGame {
                 }
             }
         }
+        
+        if (input.isMousePressed(2)){
+            int xclique = input.getMouseX();
+            int yclique = input.getMouseY();
+            MapCell cell = GerenteMapa.getCell(GerenteMapa.getTileLx(xclique), GerenteMapa.getTileLy(yclique));
+            new EntidadeNeutra(Propriedades.ARVORE, cell.getLx(), cell.getLy());
+        }
 
     }
 
@@ -148,6 +154,12 @@ public class Game extends BasicGame {
                                 grphcs.setColor(Color.yellow);
                                 grphcs.draw(e.getBox());
                             }
+//                            if (e.getGerenteMov().getPathfoundLine() != null) {
+//                                grphcs.setColor(Color.orange);
+//                                grphcs.setLineWidth(2);
+//                                grphcs.draw(e.getGerenteMov().getPathfoundLine());
+//                            }
+//                            grphcs.setLineWidth(1);
                         }
                     }
                 }

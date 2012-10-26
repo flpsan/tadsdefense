@@ -34,7 +34,7 @@ public class GerenteAnimacao {
     }
 
     public boolean isAtacando() {
-        return currentAnim == 4;
+        return currentAnim >= 4;
     }
 
     public void stopAtaca() {

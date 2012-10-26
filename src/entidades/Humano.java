@@ -44,6 +44,7 @@ public class Humano extends Entidade {
                 if (!podeAtacar) {
                     goTo(GerenteMapa.getCelulaMaisProxima(this,alvo));
                 } else if (podeAtacar) {
+                    System.out.println("teste");
                     gerenteAnimacao.playAtaca(getGerenteBatalha().getLadoAlvo());
                 }
             }
@@ -72,5 +73,11 @@ public class Humano extends Entidade {
     public void desataca() {
         gerenteAnimacao.stopAtaca();
         getGerenteBatalha().desataca();
+    }
+    
+    @Override
+    public void hit(int hit){
+        super.hit(hit);
+        System.out.println("teste");
     }
 }
