@@ -41,7 +41,7 @@ public abstract class Entidade {
         this.hpBox = new Rectangle(0, 0, 0, 3);
         this.hpBoxFundo = new Rectangle(0, 0, 20, 5);
         this.hpMax = propriedades.getHp();
-        this.hp = propriedades.getHp();
+        this.hp = (propriedades.getTipo().equals(Construcao.class))?1:propriedades.getHp();
         defaultInit(lx, ly);
     }
 
@@ -219,6 +219,8 @@ public abstract class Entidade {
         if (hp <= 0) {
             hp = 0;
             setDead(true);
+        } else if (hp>hpMax){
+            hp = hpMax;
         }
         this.hp = hp;
         updateHpBoxWidth();
@@ -307,5 +309,9 @@ public abstract class Entidade {
 
     public MapCell[][] getCurrentCells() {
         return currentCells;
+    }
+    
+    public double getHpPercent(){
+        return (double)getHp()/(double)getHpMax();
     }
 }

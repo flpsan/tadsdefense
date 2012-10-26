@@ -4,6 +4,7 @@ import entidades.Construcao;
 import entidades.Entidade;
 import entidades.EntidadeNeutra;
 import entidades.Humano;
+import entidades.Pedreiro;
 import entidades.Propriedades;
 import entidades.Time;
 import gerentes.GerenteMapa;
@@ -38,12 +39,12 @@ public class Game extends BasicGame {
     @Override
     public void init(GameContainer gc) throws SlickException {
         GerenteMapa.init();
-        GerenteMapa.addEntidade(humano = new Humano(Propriedades.HUMANO, 1, 1, Time.A));
-        GerenteMapa.addEntidade(humanoTeste = new Humano(Propriedades.HUMANO, 1, 5, Time.B));
-        GerenteMapa.addEntidade(humanoTeste2 = new Humano(Propriedades.HUMANO, 2, 5, Time.B));
+        GerenteMapa.addEntidade(humano = new Pedreiro(Propriedades.HUMANO, 1, 1, Time.A));
+        GerenteMapa.addEntidade(humanoTeste = new Humano(Propriedades.HUMANO, 0, 9, Time.B));
+//        GerenteMapa.addEntidade(humanoTeste2 = new Humano(Propriedades.HUMANO, 2, 5, Time.B));
         GerenteMapa.addEntidade(castelo = new Construcao(Propriedades.CASTELO, 5, 5, Time.A));
         GerenteMapa.addEntidade(catapulta = new Construcao(Propriedades.CATAPULTA, 5, 3, Time.A));
-        GerenteMapa.addEntidade(torre = new Construcao(Propriedades.TORRE, 5, 9, Time.A));
+        GerenteMapa.addEntidade(torre = new Construcao(Propriedades.TORRE, 2, 2, Time.A));
         GerenteMapa.addEntidade(barracks = new Construcao(Propriedades.BARRACKS, 8, 9, Time.A));
     }
 

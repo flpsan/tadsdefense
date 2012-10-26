@@ -14,7 +14,7 @@ public class Humano extends Entidade {
     public Humano(Propriedades propriedades, int lx, int ly, Time time) throws SlickException {
         super(propriedades, lx, ly, false, time, true);
         gerenteAnimacao = new GerenteAnimacao(Util.geraHumanoAnims(propriedades.getDirSpriteOriginal()));
-        gerenteAnimacao.setHitAnim(new Animation(new SpriteSheet("res/hitHumano.png", 15, 15), 150));
+        gerenteAnimacao.setHitAnim(new Animation(new SpriteSheet("res/humano/hitHumano.png", 15, 15), 150));
     }
     
     private int lastDir;
