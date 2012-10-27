@@ -1,7 +1,7 @@
 package entidades;
 
 import gerentes.GerenteAnimacao;
-import gerentes.GerenteMapa;
+import gerentes.GMapa;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
@@ -33,7 +33,7 @@ public class Humano extends Entidade {
                 gerenteAnimacao.play();
             }
         } else if (getGerenteBatalha().podeAtacar()) {
-            gerenteAnimacao.playAtaca(GerenteMapa.viradoPara(this, getGerenteBatalha().getAtacando()));
+            gerenteAnimacao.playAtaca(GMapa.viradoPara(this, getGerenteBatalha().getAtacando()));
         }
         wasMoving = isMoving;
     }

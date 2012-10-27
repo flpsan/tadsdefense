@@ -8,7 +8,7 @@ import entidades.Pedreiro;
 import entidades.Propriedades;
 import entidades.Time;
 import gerentes.GerenteAnimacao;
-import gerentes.GerenteMapa;
+import gerentes.GMapa;
 import java.util.ArrayList;
 import java.util.Iterator;
 import org.newdawn.slick.AppGameContainer;
@@ -19,6 +19,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
+import util.Const;
 import util.Util;
 
 public class Game extends BasicGame {
@@ -32,6 +33,12 @@ public class Game extends BasicGame {
     Construcao catapulta;
     Rectangle boxSelecao;
     ArrayList<Humano> humanosSelecionados;
+    Rectangle camDeslocSup;
+    Rectangle camDeslocDir;
+    Rectangle camDeslocInf;
+    Rectangle camDeslocEsq;
+    Rectangle menuSup;
+    Rectangle menuInf;
 
     public Game() throws SlickException {
         super("TADS Defense");
@@ -39,21 +46,36 @@ public class Game extends BasicGame {
 
     @Override
     public void init(GameContainer gc) throws SlickException {
-        GerenteMapa.init();
-        GerenteMapa.addEntidade(humano = new Pedreiro(Propriedades.HUMANO, 1, 1, Time.A));
-        GerenteMapa.addEntidade(humanoTeste = new Humano(Propriedades.HUMANO, 0, 9, Time.B));
+        GMapa.init();
+        GMapa.addEntidade(humano = new Pedreiro(Propriedades.HUMANO, 1, 1, Time.A));
+        GMapa.addEntidade(humanoTeste = new Humano(Propriedades.HUMANO, 0, 9, Time.B));
 //        GerenteMapa.addEntidade(humanoTeste2 = new Humano(Propriedades.HUMANO, 2, 5, Time.B));
-        GerenteMapa.addEntidade(castelo = new Construcao(Propriedades.CASTELO, 5, 5, Time.A));
-        GerenteMapa.addEntidade(catapulta = new Construcao(Propriedades.CATAPULTA, 5, 3, Time.A));
-        GerenteMapa.addEntidade(torre = new Construcao(Propriedades.TORRE, 2, 2, Time.A));
-        GerenteMapa.addEntidade(barracks = new Construcao(Propriedades.BARRACKS, 8, 9, Time.A));
+        GMapa.addEntidade(castelo = new Construcao(Propriedades.CASTELO, 5, 5, Time.A));
+        GMapa.addEntidade(catapulta = new Construcao(Propriedades.CATAPULTA, 5, 3, Time.A));
+        GMapa.addEntidade(torre = new Construcao(Propriedades.TORRE, 2, 2, Time.A));
+        GMapa.addEntidade(barracks = new Construcao(Propriedades.BARRACKS, 8, 9, Time.A));
+        int d = Const.CAMERA_DESLOC_ALT_LARG;
+        int screenW = gc.getWidth();
+        int screenH = gc.getHeight();
+        int altTelaJogo = screenH - Const.MENUINF_ALTURA - Const.MENUSUP_ALTURA;
+        int yInf = screenH - Const.MENUINF_ALTURA;
+        camDeslocSup = new Rectangle(0, Const.MENUSUP_ALTURA, screenW, d);
+        camDeslocDir = new Rectangle(screenW - d, Const.MENUSUP_ALTURA + d, d, altTelaJogo - d);
+        camDeslocInf = new Rectangle(0, yInf, screenW, d);
+        camDeslocEsq = new Rectangle(0, Const.MENUSUP_ALTURA + d, d, altTelaJogo - d);
+        
+        menuSup = new Rectangle(0, 0, screenW, Const.MENUSUP_ALTURA);
+        menuInf = new Rectangle(0, yInf+d, screenW, Const.MENUINF_ALTURA);
+
+
     }
 
     @Override
     public void update(GameContainer gc, int i) throws SlickException {
         Input input = gc.getInput();
-
-        Iterator<Entidade> it = GerenteMapa.getAllEntidades().iterator();
+        int x = input.getMouseX();
+        int y = input.getMouseY();
+        Iterator<Entidade> it = GMapa.getAllEntidades().iterator();
         while (it.hasNext()) {
             Entidade e = it.next();
             e.update();
@@ -67,11 +89,10 @@ public class Game extends BasicGame {
         }
 
         if (input.isMouseButtonDown(0)) {
+
             if (boxSelecao == null) {
-                boxSelecao = new Rectangle(input.getMouseX(), input.getMouseY(), 0, 0);
+                boxSelecao = new Rectangle(x, y, 0, 0);
             } else {
-                int x = input.getMouseX();
-                int y = input.getMouseY();
                 int w = (int) (x - boxSelecao.getX());
                 int h = (int) (y - boxSelecao.getY());
                 boxSelecao.setWidth(w);
@@ -79,18 +100,16 @@ public class Game extends BasicGame {
             }
         } else {
             if (boxSelecao != null) {
-                humanosSelecionados = GerenteMapa.getHumanosSelecionados(boxSelecao);
+                humanosSelecionados = GMapa.getHumanosSelecionados(boxSelecao);
                 boxSelecao = null;
             }
-
         }
+        
         if (input.isMousePressed(1)) {
-            int xclique = input.getMouseX();
-            int yclique = input.getMouseY();
-            MapCell cell = GerenteMapa.getCell(GerenteMapa.getTileLx(xclique), GerenteMapa.getTileLy(yclique));
+            MapCell cell = GMapa.getCell(GMapa.getTileLx(x), GMapa.getTileLy(y));
             Entidade e = null;
             for (Entidade e0 : cell.getEntidades()) {
-                if (e0.getBox().contains(xclique, yclique)) {
+                if (e0.getBox().contains(x, y)) {
                     e = e0;
                 }
             }
@@ -108,18 +127,24 @@ public class Game extends BasicGame {
             }
         }
 
-        if (input.isMousePressed(2)) {
-            int xclique = input.getMouseX();
-            int yclique = input.getMouseY();
-            MapCell cell = GerenteMapa.getCell(GerenteMapa.getTileLx(xclique), GerenteMapa.getTileLy(yclique));
-            new EntidadeNeutra(Propriedades.ARVORE, cell.getLx(), cell.getLy());
+        int velCamera = 10;
+        if (camDeslocSup.contains(x, y)){
+            GMapa.moveMapa(0, velCamera);
+        } else if (camDeslocDir.contains(x, y)){
+            GMapa.moveMapa(-velCamera, 0);
+        } else if (camDeslocInf.contains(x, y)){
+            GMapa.moveMapa(0, -velCamera);
+        } else if (camDeslocEsq.contains(x, y)){
+            GMapa.moveMapa(velCamera, 0);
         }
+
+
 
     }
 
     @Override
     public void render(GameContainer gc, Graphics grphcs) throws SlickException {
-        GerenteMapa.getTiledMap().render(Util.MAP_X, Util.MAP_Y);
+        GMapa.getTiledMap().render(GMapa.getDx(), GMapa.getDy());
         if (humanosSelecionados != null && !humanosSelecionados.isEmpty()) {
             for (Entidade e : humanosSelecionados) {
                 Entidade alvo = e.getGerenteBatalha().getAtacando();
@@ -142,7 +167,7 @@ public class Game extends BasicGame {
 
         int mx = gc.getInput().getMouseX();
         int my = gc.getInput().getMouseY();
-        for (MapCell[] m : GerenteMapa.getMap()) {
+        for (MapCell[] m : GMapa.getMap()) {
             for (MapCell cell : m) {
                 for (Entidade e : cell.getEntidades()) {
                     if (e.getCurrentCell().equals(cell)) {
@@ -167,10 +192,14 @@ public class Game extends BasicGame {
                 }
             }
         }
-
         if (boxSelecao != null) {
             grphcs.draw(boxSelecao);
         }
+
+        grphcs.setColor(Color.black);
+        grphcs.fill(menuSup);
+        grphcs.fill(menuInf);
+
 
     }
 
@@ -179,6 +208,7 @@ public class Game extends BasicGame {
         gc.setDisplayMode(640, 480, false);
         gc.setMinimumLogicUpdateInterval(50);
         gc.setTargetFrameRate(100);
+        gc.setShowFPS(false);
         gc.start();
     }
 }

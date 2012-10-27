@@ -16,10 +16,7 @@ import org.newdawn.slick.geom.Rectangle;
  * @author Felipe
  */
 public class Util {
-
-    public static final int MAP_X = 0, MAP_Y = 0, TILE_HEIGHT = 32, TILE_WIDTH = 32;
     public static final int HUMANO_WIDTH = 12, HUMANO_HEIGHT = 26;
-    public static int TOTAL_TILE_X, TOTAL_TILE_Y;
 
     public static Animation[] geraHumanoAnims(String res) throws SlickException {
         SpriteSheet spritesheet = new SpriteSheet(res, HUMANO_WIDTH, HUMANO_HEIGHT);

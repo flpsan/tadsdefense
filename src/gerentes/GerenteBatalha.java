@@ -85,7 +85,7 @@ public class GerenteBatalha {
         if (entidade.getPropriedades().podeAtacar()) {
             boolean ehConstrucao = entidade instanceof Construcao;
             if (isAtacando()) {
-                podeAtacar = GerenteMapa.podeAtacar(entidade, atacando) || (ehConstrucao && entidadesAVista.contains(atacando) && ((Construcao) entidade).temCondicaoDeAtacar());
+                podeAtacar = GMapa.podeAtacar(entidade, atacando) || (ehConstrucao && entidadesAVista.contains(atacando) && ((Construcao) entidade).temCondicaoDeAtacar());
                 if (podeAtacar && roundsCont++ > roundsToAttack) {
                     getAtacando().hit(1);
                     if (ehConstrucao) {
@@ -93,7 +93,7 @@ public class GerenteBatalha {
                     }
                     roundsCont = 0;
                 } else if (entidade.getGerenteMov().getMovs().isEmpty() && !ehConstrucao) {
-                    entidade.goTo(GerenteMapa.getCelulaMaisProxima(entidade, atacando));
+                    entidade.goTo(GMapa.getCelulaMaisProxima(entidade, atacando));
                 }
             }
 
@@ -144,7 +144,7 @@ public class GerenteBatalha {
     }
 
     public int getLadoAlvo() {
-        return GerenteMapa.viradoPara(entidade, atacando);
+        return GMapa.viradoPara(entidade, atacando);
     }
 
     public boolean podeAtacar() {

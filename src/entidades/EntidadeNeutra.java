@@ -2,7 +2,7 @@ package entidades;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import gerentes.GerenteMapa;
+import gerentes.GMapa;
 import tadsdefense.MapCell;
 
 public class EntidadeNeutra extends Entidade {

@@ -1,39 +1,46 @@
 package gerentes;
 
-import util.Util;
 import entidades.Entidade;
 import entidades.Humano;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.tiled.TiledMap;
-import sun.security.action.GetLongAction;
-import tadsdefense.Game;
 import tadsdefense.MapCell;
+import util.Const;
 import util.Pos;
+import util.Util;
 
-public class GerenteMapa {
+public class GMapa {
 
-    private static ArrayList<Entidade> allEntidades;
+    private static ArrayList<Entidade> entidades;
     private static MapCell[][] map;
     private static TiledMap tiledMap;
+    private static Pos deslocamentoMapa;
 
     public static void init() throws SlickException {
-        allEntidades = new ArrayList();
+        deslocamentoMapa = new Pos(0, Const.MENUSUP_ALTURA);
+        entidades = new ArrayList();
         setTiledMap(new TiledMap("res/tileset.tmx", "res"));
-        Util.TOTAL_TILE_X = getTiledMap().getWidth();
-        Util.TOTAL_TILE_Y = getTiledMap().getHeight();
-        map = new MapCell[Util.TOTAL_TILE_X][Util.TOTAL_TILE_Y];
-        for (int x = 0; x < Util.TOTAL_TILE_X; x++) {
-            for (int y = 0; y < Util.TOTAL_TILE_Y; y++) {
-                map[x][y] = new MapCell(x, y);
+        Const.TOTAL_TILE_X = getTiledMap().getWidth();
+        Const.TOTAL_TILE_Y = getTiledMap().getHeight();
+        map = new MapCell[Const.TOTAL_TILE_X][Const.TOTAL_TILE_Y];
+        for (int lx = 0; lx < Const.TOTAL_TILE_X; lx++) {
+            for (int ly = 0; ly < Const.TOTAL_TILE_Y; ly++) {
+                map[lx][ly] = new MapCell(lx, ly);
             }
         }
+    }
+
+    public static int getDx() {
+        return deslocamentoMapa.getX();
+    }
+
+    public static int getDy() {
+        return deslocamentoMapa.getY();
     }
 
     public static MapCell getCell(int lx, int ly) {
@@ -45,11 +52,11 @@ public class GerenteMapa {
     }
 
     public static int getTileLx(int x) {
-        return (int) Math.floor(x / Util.TILE_WIDTH);
+        return (int) Math.floor((x - GMapa.getDx()) / Const.TILE_WIDTH);
     }
 
     public static int getTileLy(int y) {
-        return (int) Math.floor(y / Util.TILE_HEIGHT);
+        return (int) Math.floor((y - GMapa.getDy()) / Const.TILE_HEIGHT);
     }
 
     public static boolean isCaminhoOk(LinkedList<MapCell> movs, Entidade e) {
@@ -93,7 +100,7 @@ public class GerenteMapa {
     }
 
     public static int[] getLimitesDaCelula(MapCell cell) {
-         return new int[]{cell.getLx(), cell.getLx(), cell.getLy(), cell.getLy()};
+        return new int[]{cell.getLx(), cell.getLx(), cell.getLy(), cell.getLy()};
     }
 
     public static Pos getPosicaoReferencia(Entidade e, int[] limites) {
@@ -261,7 +268,7 @@ public class GerenteMapa {
     }
 
     public static ArrayList<Entidade> getAllEntidades() {
-        return allEntidades;
+        return entidades;
     }
 
     public static int getDistancia(MapCell cell0, MapCell cell1) {
@@ -271,12 +278,12 @@ public class GerenteMapa {
     public static MapCell[][] getVisao(Entidade e) {
         MapCell[][] visao = e.getVisao();
         int raio = e.getRaioVisao();
-        int x0 = e.getLx() - raio;
-        int x1 = e.getLx() + raio;
-        int y0 = e.getLy() - raio;
-        int y1 = e.getLy() + raio;
-        for (int i = x0, x = 0; i <= x1; i++, x++) {
-            for (int j = y0, y = 0; j <= y1; j++, y++) {
+        int lx0 = e.getLx() - raio;
+        int lx1 = e.getLx() + raio;
+        int ly0 = e.getLy() - raio;
+        int ly1 = e.getLy() + raio;
+        for (int i = lx0, x = 0; i <= lx1; i++, x++) {
+            for (int j = ly0, y = 0; j <= ly1; j++, y++) {
                 visao[x][y] = mapLimitsOk(i, j) ? getCell(i, j) : null;
             }
         }
@@ -284,11 +291,11 @@ public class GerenteMapa {
     }
 
     private static boolean mapLimitsOk(int lx, int ly) {
-        return lx >= 0 && lx < Util.TOTAL_TILE_X && ly >= 0 && ly < Util.TOTAL_TILE_Y;
+        return lx >= 0 && lx < Const.TOTAL_TILE_X && ly >= 0 && ly < Const.TOTAL_TILE_Y;
     }
 
     public static void addEntidade(Entidade e) {
-        allEntidades.add(e);
+        entidades.add(e);
     }
 
     private static int distComp(MapCell cell0, Entidade e) {
@@ -341,6 +348,27 @@ public class GerenteMapa {
             return 1;
         } else {
             return 3;
+        }
+    }
+
+    public static void moveMapa(int deltax, int deltay) {
+        int novoX = getDx() + deltax;
+        int novoY = getDy() + deltay;
+        
+        if (novoX<=0 && novoY<=Const.MENUSUP_ALTURA) { //Verificação dos limites de deslocamento do mapa
+            deslocamentoMapa.setX(novoX);
+            deslocamentoMapa.setY(novoY);
+            for (MapCell[] m : map) {
+                for (MapCell c : m) {
+                    c.updatePos();
+                }
+            }
+            for (Entidade e : entidades) {
+                e.setCenterX(e.getCenterX() + deltax);
+                e.getGerenteMov().setX1(e.getGerenteMov().getX1() + deltax);
+                e.setCenterY(e.getCenterY() + deltay);
+                e.getGerenteMov().setY1(e.getGerenteMov().getY1() + deltay);
+            }
         }
 
     }

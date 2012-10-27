@@ -107,7 +107,6 @@ public class GerenteMovimento {
             }
             entidade.setCenterX(novox);
             entidade.setCenterY(novoy);
-
             boolean tocouCelula = getNextCell().getBox().intersects(entidade.getBox());
 
             if (tocouCelula) {
@@ -148,10 +147,10 @@ public class GerenteMovimento {
             if (!isMoving() && !getMovs().isEmpty()) {
                 MapCell cell = getMovs().pop();
                 setNextCell(cell);
-                boolean isCaminhoOk = GerenteMapa.isCaminhoOk(getMovs(), entidade);
-                boolean isAlvoOk = GerenteMapa.getCell(lastPathfAlvoLx, lastPathfAlvoLy).isCaminhavel(entidade);
+                boolean isCaminhoOk = GMapa.isCaminhoOk(getMovs(), entidade);
+                boolean isAlvoOk = GMapa.getCell(lastPathfAlvoLx, lastPathfAlvoLy).isCaminhavel(entidade);
                 if (!isAlvoOk) {
-                    rePathfind(GerenteMapa.getCelulaMaisProxima(entidade,GerenteMapa.getLimitesDaCelula(GerenteMapa.getCell(lastPathfAlvoLx, lastPathfAlvoLy))));
+                    rePathfind(GMapa.getCelulaMaisProxima(entidade,GMapa.getLimitesDaCelula(GMapa.getCell(lastPathfAlvoLx, lastPathfAlvoLy))));
                 } else if (!isCaminhoOk) {
                     rePathfind();
                 } else {

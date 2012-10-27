@@ -2,8 +2,10 @@ package tadsdefense;
 
 import entidades.Entidade;
 import entidades.Humano;
+import gerentes.GMapa;
 import java.util.LinkedList;
 import org.newdawn.slick.geom.Rectangle;
+import util.Const;
 import util.Pos;
 import util.Util;
 
@@ -46,7 +48,7 @@ public class MapCell {
     private GerentePosicionamento gerentePos;
 
     public MapCell(int lx, int ly) {
-        this.box = new Rectangle(lx * Util.TILE_WIDTH, ly * Util.TILE_HEIGHT, Util.TILE_WIDTH, Util.TILE_HEIGHT);
+        this.box = new Rectangle(GMapa.getDx()+(lx * Const.TILE_WIDTH), GMapa.getDy()+ly * Const.TILE_HEIGHT, Const.TILE_WIDTH, Const.TILE_HEIGHT);
         this.lx = lx;
         this.ly = ly;
         this.gerentePos = new GerentePosicionamento();
@@ -107,6 +109,11 @@ public class MapCell {
 
     public LinkedList<Entidade> getEntidades() {
         return entidades;
+    }
+    
+    public void updatePos(){
+        box.setX(GMapa.getDx()+(lx * Const.TILE_WIDTH));
+        box.setY(GMapa.getDy()+(ly * Const.TILE_HEIGHT));
     }
 
 }

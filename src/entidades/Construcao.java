@@ -6,6 +6,7 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import util.Const;
 import util.Util;
 
 public class Construcao extends Entidade {
@@ -35,8 +36,8 @@ public class Construcao extends Entidade {
     public void draw() {
         if (getPropriedades().isImagemMaiorQueBase()) {
             int largura = getPropriedades().getLargura();
-            int baseLargura = getPropriedades().getBaseLargura() * Util.TILE_WIDTH;
-            int baseAltura = Util.TILE_HEIGHT * getPropriedades().getBaseAltura();
+            int baseLargura = getPropriedades().getBaseLargura() * Const.TILE_WIDTH;
+            int baseAltura = Const.TILE_HEIGHT * getPropriedades().getBaseAltura();
             getSprite().draw(getX() - (largura - baseLargura) / 2, getY() - getPropriedades().getTamanho().getAltura() + baseAltura);
         } else {
             getSprite().draw(getX(), getY());

@@ -29,12 +29,12 @@ public class GerenteConstrucao {
                 paraConstrucao();
             }
             if (pedreiro.getGerenteMov().getMovs().isEmpty()) {
-                if (GerenteMapa.podeAtacar(pedreiro, alvoConstrucao)) {
+                if (GMapa.podeAtacar(pedreiro, alvoConstrucao)) {
                     construindo(alvoConstrucao);
                     alvoConstrucao = null;
                     System.out.println("chegou no alvo");
                 } else {
-                    pedreiro.goTo(GerenteMapa.getCelulaMaisProxima(pedreiro, alvoConstrucao));
+                    pedreiro.goTo(GMapa.getCelulaMaisProxima(pedreiro, alvoConstrucao));
                     System.out.println("goTo");
                 }
             }
