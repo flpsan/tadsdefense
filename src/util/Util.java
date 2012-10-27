@@ -38,7 +38,7 @@ public class Util {
         return (rA.getMinX() <= rB.getMinX() && rA.getMaxX() >= rB.getMaxX() && rA.getMinY() <= rB.getMinY() && rA.getMaxY() >= rB.getMaxY());
     }
 
-    public static boolean contains(Circle c, int x, int y) {
+    public static boolean contains(Circle c, double x, double y) {
         double dist = Point.distance(x, y, c.getCenterX(), c.getCenterY());
         return dist <= c.getRadius();
     }

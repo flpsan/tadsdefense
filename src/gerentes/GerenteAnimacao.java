@@ -6,9 +6,9 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Line;
-import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Vector2f;
 import util.Pos;
+import util.PosDouble;
 import util.Util;
 
 public class GerenteAnimacao {
@@ -24,7 +24,7 @@ public class GerenteAnimacao {
     public Image tiroAnim;
     Vector2f delta;
     Circle circComp;
-    Pos tiroPos;
+    PosDouble tiroPos;
 
     public GerenteAnimacao(Entidade e, Animation[] anims) {
         this.anims = anims;
@@ -98,20 +98,20 @@ public class GerenteAnimacao {
             delta = new Vector2f(deltaX, deltaY);
             delta.normalise();
             tiroAnim.setRotation((float) delta.getTheta());
-            tiroPos = new Pos(entidade.getCenterX(), entidade.getCenterY());
+            tiroPos = new PosDouble(entidade.getCenterX(), entidade.getCenterY());
         }
     }
 
     public void draw() {
         if (tiroPos != null) {
-            int x = tiroPos.getX();
-            int y = tiroPos.getY();
-            x += delta.getX() * 3;
-            y += delta.getY() * 3;
+            double x = tiroPos.getX();
+            double y = tiroPos.getY();
+            x += delta.getX()*2;
+            y += delta.getY()*2;
             tiroPos.setX(x);
             tiroPos.setY(y);
             if (Util.contains(circComp, x, y)) {
-                tiroAnim.draw(x, y);
+                tiroAnim.draw((int)x, (int)y);
             } else {
                 tiroPos = null;
                 circComp = null;
