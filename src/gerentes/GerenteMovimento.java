@@ -147,10 +147,10 @@ public class GerenteMovimento {
             if (!isMoving() && !getMovs().isEmpty()) {
                 MapCell cell = getMovs().pop();
                 setNextCell(cell);
-                boolean isCaminhoOk = GMapa.isCaminhoOk(getMovs(), entidade);
-                boolean isAlvoOk = GMapa.getCell(lastPathfAlvoLx, lastPathfAlvoLy).isCaminhavel(entidade);
+                boolean isCaminhoOk = Mapa.isCaminhoOk(getMovs(), entidade);
+                boolean isAlvoOk = Mapa.getCell(lastPathfAlvoLx, lastPathfAlvoLy).isCaminhavel(entidade);
                 if (!isAlvoOk) {
-                    rePathfind(GMapa.getCelulaMaisProxima(entidade,GMapa.getLimitesDaCelula(GMapa.getCell(lastPathfAlvoLx, lastPathfAlvoLy))));
+                    rePathfind(Mapa.getCelulaMaisProxima(entidade,Mapa.getLimitesDaCelula(Mapa.getCell(lastPathfAlvoLx, lastPathfAlvoLy))));
                 } else if (!isCaminhoOk) {
                     rePathfind();
                 } else {

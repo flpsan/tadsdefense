@@ -2,7 +2,7 @@ package entidades;
 
 import gerentes.GerenteAnimacao;
 import gerentes.GerenteBatalha;
-import gerentes.GMapa;
+import gerentes.Mapa;
 import gerentes.GerenteMovimento;
 import org.newdawn.slick.geom.Rectangle;
 import tadsdefense.MapCell;
@@ -49,14 +49,14 @@ public abstract class Entidade {
 
     private void defaultInit(int lx, int ly) {
         updateHpBoxWidth();
-        setCurrentCell(GMapa.getCell(lx, ly));
+        setCurrentCell(Mapa.getCell(lx, ly));
         if (propriedades.isBaseMultipla()) {
             int baseL = propriedades.getBaseLargura();
             int baseA = propriedades.getBaseAltura();
             currentCells = new MapCell[baseL][baseA];
             for (int i = 0; i < baseL; i++) {
                 for (int j = 0; j < baseA; j++) {
-                    currentCells[i][j] = GMapa.getCell(lx + i, ly + j);
+                    currentCells[i][j] = Mapa.getCell(lx + i, ly + j);
                     getCurrentCells()[i][j].addEntidade(this);
                 }
             }
@@ -84,7 +84,7 @@ public abstract class Entidade {
         }
         currentCell = cell;
         getCurrentCell().addEntidade(this);
-        getGerenteBatalha().setVisao(GMapa.getVisao(this));
+        getGerenteBatalha().setVisao(Mapa.getVisao(this));
     }
 
     public void update() {

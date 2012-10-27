@@ -3,7 +3,7 @@ package util;
 import util.Util;
 import entidades.Entidade;
 import java.util.ArrayList;
-import gerentes.GMapa;
+import gerentes.Mapa;
 
 public class AStar {
 
@@ -17,7 +17,7 @@ public class AStar {
         grid = new No[Const.TOTAL_TILE_X][Const.TOTAL_TILE_Y];
         for (int lx = 0; lx < Const.TOTAL_TILE_X; lx++) {
             for (int ly = 0; ly < Const.TOTAL_TILE_Y; ly++) {
-                grid[lx][ly] = new No(GMapa.getMap()[lx][ly]);
+                grid[lx][ly] = new No(Mapa.getMap()[lx][ly]);
             }
         }
     }

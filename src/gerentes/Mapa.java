@@ -14,7 +14,7 @@ import util.Const;
 import util.Pos;
 import util.Util;
 
-public class GMapa {
+public class Mapa {
 
     private static ArrayList<Entidade> entidades;
     private static MapCell[][] map;
@@ -52,11 +52,11 @@ public class GMapa {
     }
 
     public static int getTileLx(int x) {
-        return (int) Math.floor((x - GMapa.getDx()) / Const.TILE_WIDTH);
+        return (int) Math.floor((x - Mapa.getDx()) / Const.TILE_WIDTH);
     }
 
     public static int getTileLy(int y) {
-        return (int) Math.floor((y - GMapa.getDy()) / Const.TILE_HEIGHT);
+        return (int) Math.floor((y - Mapa.getDy()) / Const.TILE_HEIGHT);
     }
 
     public static boolean isCaminhoOk(LinkedList<MapCell> movs, Entidade e) {
