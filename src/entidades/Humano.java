@@ -3,6 +3,8 @@ package entidades;
 import gerentes.GerenteAnimacao;
 import gerentes.Mapa;
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import util.Util;
@@ -46,11 +48,12 @@ public class Humano extends Entidade {
     }
 
     @Override
-    public void draw() {
+    public void draw(Graphics g) {
         gerenteAnimacao.getAnimation().draw(getX(), getY());
         if (gerenteAnimacao.getHitAnim() != null && !gerenteAnimacao.getHitAnim().isStopped()) {
             gerenteAnimacao.getHitAnim().draw(getX(), getY());
         }
+        drawHpBox(g);
     }
 
     @Override

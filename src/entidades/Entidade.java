@@ -4,6 +4,8 @@ import gerentes.GerenteAnimacao;
 import gerentes.GerenteBatalha;
 import gerentes.Mapa;
 import gerentes.GerenteMovimento;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 import tadsdefense.MapCell;
 
@@ -43,7 +45,7 @@ public abstract class Entidade {
         this.hpBox = new Rectangle(0, 0, 0, 3);
         this.hpBoxFundo = new Rectangle(0, 0, 20, 5);
         this.hpMax = propriedades.getHp();
-        this.hp = (propriedades.getTipo().equals(Construcao.class))?1:propriedades.getHp();
+        this.hp = (propriedades.getTipo().equals(Construcao.class)) ? 1 : propriedades.getHp();
         defaultInit(lx, ly);
     }
 
@@ -68,7 +70,7 @@ public abstract class Entidade {
         }
     }
 
-    public abstract void draw();
+    public abstract void draw(Graphics g);
 
     public void goTo(int tileLx, int tileLy) {
         gerenteMov.startPathfind(tileLx, tileLy);
@@ -208,8 +210,8 @@ public abstract class Entidade {
         }
         getCurrentCell().removeEntidade(this);
         if (propriedades.isBaseMultipla()) {
-            for(MapCell[] x : currentCells){
-                for(MapCell cell : x){
+            for (MapCell[] x : currentCells) {
+                for (MapCell cell : x) {
                     cell.removeEntidade(this);
                 }
             }
@@ -220,7 +222,7 @@ public abstract class Entidade {
         if (hp <= 0) {
             hp = 0;
             setDead(true);
-        } else if (hp>hpMax){
+        } else if (hp > hpMax) {
             hp = hpMax;
         }
         this.hp = hp;
@@ -311,9 +313,9 @@ public abstract class Entidade {
     public MapCell[][] getCurrentCells() {
         return currentCells;
     }
-    
-    public double getHpPercent(){
-        return (double)getHp()/(double)getHpMax();
+
+    public double getHpPercent() {
+        return (double) getHp() / (double) getHpMax();
     }
 
     public GerenteAnimacao getGerenteAnimacao() {
@@ -322,5 +324,12 @@ public abstract class Entidade {
 
     public void setGerenteAnimacao(GerenteAnimacao gerenteAnimacao) {
         this.gerenteAnimacao = gerenteAnimacao;
+    }
+
+    public void drawHpBox(Graphics g) {
+        g.setColor(Color.black);
+        g.fill(getHpBoxFundo());
+        g.setColor(Color.yellow);
+        g.fill(getHpBox());
     }
 }

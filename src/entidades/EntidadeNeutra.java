@@ -3,6 +3,7 @@ package entidades;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import gerentes.Mapa;
+import org.newdawn.slick.Graphics;
 import tadsdefense.MapCell;
 
 public class EntidadeNeutra extends Entidade {
@@ -15,7 +16,7 @@ public class EntidadeNeutra extends Entidade {
     }
 
     @Override
-    public void draw() {
+    public void draw(Graphics g) {
         sprite.draw(getX(), getY());
     }
 }

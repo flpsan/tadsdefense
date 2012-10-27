@@ -372,4 +372,8 @@ public class Mapa {
         }
 
     }
+
+    public static MapCell getCell2(int x, int y) {
+        return getCell(getTileLx(x),getTileLy(y));
+    }
 }

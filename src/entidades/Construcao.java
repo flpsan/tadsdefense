@@ -3,6 +3,7 @@ package entidades;
 import gerentes.GerenteAnimacao;
 import java.util.ArrayList;
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
@@ -33,7 +34,7 @@ public class Construcao extends Entidade {
     }
 
     @Override
-    public void draw() {
+    public void draw(Graphics g) {
         if (getPropriedades().isImagemMaiorQueBase()) {
             int largura = getPropriedades().getLargura();
             int baseLargura = getPropriedades().getBaseLargura() * Const.TILE_WIDTH;
@@ -43,6 +44,9 @@ public class Construcao extends Entidade {
             getSprite().draw(getX(), getY());
         }
         gerenteAnimacao.draw();
+        if (!getGerenteBatalha().getAtacadoPor().isEmpty()){
+            drawHpBox(g);
+        }
     }
 
     public void update() {
@@ -79,7 +83,6 @@ public class Construcao extends Entidade {
 
     private void setDetonadoSprite() {
         double n = 1 / (double) (getPropriedades().getnDetonSprites()+1);
-        System.out.println(n+"-"+getHpPercent());
         if (getHpPercent() < 1.0 - n) {
             int i = (int) (getHpPercent() / n);
             setSprite(detonado.getSprite(i, 0));

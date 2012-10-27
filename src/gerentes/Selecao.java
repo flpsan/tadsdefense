@@ -12,6 +12,12 @@ public class Selecao {
     private ArrayList<Humano> humanosSelecionados;
     private Rectangle boxSelecao;
     private Construcao construcaoSelecionada;
+    private Entidade entidadeFocada;
+    
+    
+    public Selecao(){
+        humanosSelecionados = new ArrayList();
+    }
 
     public void botaoEsquerdo(boolean botaoEsquerdoDown, int x, int y) {
         if (botaoEsquerdoDown) {
@@ -63,10 +69,35 @@ public class Selecao {
     }
 
     private boolean isAlgoSelecionado() {
-        return !humanosSelecionados.isEmpty() || construcaoSelecionada != null;
+        return isHumanosSelecionados() || isConstrucaoSelecionada();
     }
 
     public Rectangle getBoxSelecao() {
         return boxSelecao;
+    }
+    
+    public boolean isHumanosSelecionados(){
+        return !humanosSelecionados.isEmpty();
+    }
+    
+    public boolean isConstrucaoSelecionada(){
+        return construcaoSelecionada != null;
+    }
+
+    public void setFoco(int x, int y) {
+        MapCell cell = Mapa.getCell2(x, y);
+        Entidade entidadeFocada = null;
+        if (cell!=null){
+            for(Entidade e : cell.getEntidades()){
+                if (e.getBox().contains(x,y)){
+                    entidadeFocada = e;
+                }
+            }
+        }
+        this.entidadeFocada = entidadeFocada;
+    }
+
+    public Entidade getEntidadeFocada() {
+        return entidadeFocada;
     }
 }
