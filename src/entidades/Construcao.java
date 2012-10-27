@@ -1,6 +1,8 @@
 package entidades;
 
+import gerentes.GerenteAnimacao;
 import java.util.ArrayList;
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
@@ -14,6 +16,7 @@ public class Construcao extends Entidade {
     private SpriteSheet detonado;
     private boolean construido;
     private ArrayList<Pedreiro> pedreiros;
+    private GerenteAnimacao gerenteAnimacao;
 
     public Construcao(Propriedades propriedades, int lx, int ly, Time time) throws SlickException {
         super(propriedades, lx, ly, true, time, false);
@@ -23,6 +26,9 @@ public class Construcao extends Entidade {
         sprite = construcao.getSprite(0, 0);
         construido = false;
         pedreiros = new ArrayList();
+        gerenteAnimacao = new GerenteAnimacao(this);
+        gerenteAnimacao.setHitAnim(new Animation(new SpriteSheet("res/humano/hitHumano.png", 15, 15), 150));
+        super.setGerenteAnimacao(gerenteAnimacao);
     }
 
     @Override
@@ -35,10 +41,13 @@ public class Construcao extends Entidade {
         } else {
             getSprite().draw(getX(), getY());
         }
+        gerenteAnimacao.draw();
     }
 
     public void update() {
         super.update();
+        getGerenteBatalha().update();
+        
         if (!pedreiros.isEmpty()) {
             if (getHp() < getHpMax()) {
                 hit(pedreiros.size() * -1);
@@ -58,6 +67,7 @@ public class Construcao extends Entidade {
                 setDetonadoSprite();
             }
         }
+
     }
 
     private void setConstruindoSprite() {
@@ -79,6 +89,10 @@ public class Construcao extends Entidade {
         if (!sprite.equals(s)) {
             sprite = s;
         }
+    }
+    
+    public boolean temCondicaoDeAtacar(){
+        return (isConstruido() && getHpPercent()>=0.5);
     }
 
     public ArrayList<Pedreiro> getPedreiros() {

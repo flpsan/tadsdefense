@@ -1,5 +1,6 @@
 package gerentes;
 
+import entidades.Construcao;
 import entidades.Entidade;
 import entidades.Humano;
 import entidades.Time;
@@ -18,7 +19,7 @@ public class GerenteBatalha {
     private int raioVisao;
     private MapCell[][] visao;
     private LinkedList<Entidade> entidadesAVista;
-    private boolean doLadoDoAlvo;
+    private boolean podeAtacar;
 
     public GerenteBatalha(Entidade entidade, int roundsToAttack, int raioVisao) {
         this.atacadoPor = new LinkedList();
@@ -27,7 +28,7 @@ public class GerenteBatalha {
         this.raioVisao = raioVisao;
         this.visao = new MapCell[1 + raioVisao * 2][1 + raioVisao * 2];
         this.entidadesAVista = new LinkedList();
-        this.doLadoDoAlvo = false;
+        this.podeAtacar = false;
     }
 
     public void ataca(Entidade e) {
@@ -43,7 +44,7 @@ public class GerenteBatalha {
     public void desataca() {
         if (atacando != null) {
             atacando = null;
-            doLadoDoAlvo = false;
+            podeAtacar = false;
         }
     }
 
@@ -81,23 +82,35 @@ public class GerenteBatalha {
     }
 
     public void update() {
-        if (isAtacando()) {
-            if (doLadoDoAlvo = GerenteMapa.podeAtacar(entidade, atacando) && roundsCont++ > roundsToAttack) {
-                getAtacando().hit(1);
-                roundsCont = 0;
-            } else {
-                if (entidade.getGerenteMov().getMovs().isEmpty()) {
+        if (entidade.getPropriedades().podeAtacar()) {
+            boolean ehConstrucao = entidade instanceof Construcao;
+            if (isAtacando()) {
+                podeAtacar = GerenteMapa.podeAtacar(entidade, atacando) || (ehConstrucao && entidadesAVista.contains(atacando) && ((Construcao) entidade).temCondicaoDeAtacar());
+                if (podeAtacar && roundsCont++ > roundsToAttack) {
+                    getAtacando().hit(1);
+                    if (ehConstrucao) {
+                        entidade.getGerenteAnimacao().playTiroAnim(atacando);
+                    }
+                    roundsCont = 0;
+                } else if (entidade.getGerenteMov().getMovs().isEmpty() && !ehConstrucao) {
                     entidade.goTo(GerenteMapa.getCelulaMaisProxima(entidade, atacando));
                 }
             }
-        }
 
-        if (!isAtacando() && entidade.getTime() == Time.B && updateCont++ >= T_UPDATE_ENTIDADES) {
-            updateInimigosAVista();
-            if (!getEntidadesAVista().isEmpty()) {
-                entidade.ataca(getEntidadesAVista().getFirst());
+            //Construções precisam atualizar pra nao acabarem atacando algo que esteja fora do raio de visão
+            if (ehConstrucao) {
+                updateInimigosAVista();
             }
-            updateCont = 0;
+
+
+            //ATAQUE AUTOMÁTICO - sem necessidade do jogador atacar - Time B e construcoes que atacam
+            if (!isAtacando() && (entidade.getTime() == Time.B || ehConstrucao) && updateCont++ >= T_UPDATE_ENTIDADES) {
+                updateInimigosAVista();
+                if (!getEntidadesAVista().isEmpty()) {
+                    entidade.ataca(getEntidadesAVista().getFirst());
+                }
+                updateCont = 0;
+            }
         }
     }
 
@@ -134,7 +147,7 @@ public class GerenteBatalha {
         return GerenteMapa.viradoPara(entidade, atacando);
     }
 
-    public boolean isDoLadoDoAlvo() {
-        return doLadoDoAlvo;
+    public boolean podeAtacar() {
+        return podeAtacar;
     }
 }

@@ -5,12 +5,12 @@ import util.Pos;
 
 public enum Propriedades {
 
-    CASTELO(Construcao.class, new Dimensao(96, 96), new Dimensao(3, 2), 0, 0, 50, 1, 1),
-    CATAPULTA(Construcao.class, new Dimensao(29, 21), new Dimensao(1, 1), 0, 0, 50, 1, 1),
-    TORRE(Construcao.class, new Dimensao(40, 64), new Dimensao(1, 1), 0, 0, 50, 2, 3),
-    BARRACKS(Construcao.class, new Dimensao(72, 42), new Dimensao(2, 1), 0, 0, 50, 1, 1),
-    HUMANO(Humano.class, new Dimensao(12, 26), new Dimensao(1, 1), 5, 2, 20, -1, -1),
-    ARVORE(EntidadeNeutra.class, new Dimensao(32, 32), new Dimensao(1, 1), 0, 0, 0, -1, -1);
+    CASTELO(Construcao.class, new Dimensao(96, 96), new Dimensao(3, 2), 0, 0, 50, 1, 1, false),
+    CATAPULTA(Construcao.class, new Dimensao(29, 21), new Dimensao(1, 1), 0, 0, 50, 1, 1, false),
+    TORRE(Construcao.class, new Dimensao(40, 64), new Dimensao(1, 1), 0, 3, 50, 2, 3, true),
+    BARRACKS(Construcao.class, new Dimensao(72, 42), new Dimensao(2, 1), 0, 0, 50, 1, 1, false),
+    HUMANO(Humano.class, new Dimensao(12, 26), new Dimensao(1, 1), 5, 2, 20, -1, -1, true),
+    ARVORE(EntidadeNeutra.class, new Dimensao(32, 32), new Dimensao(1, 1), 0, 0, 0, -1, -1, false);
     private Class tipo;
     private Dimensao tamanho;
     private Dimensao tamanhoBase;
@@ -19,8 +19,9 @@ public enum Propriedades {
     private int hp;
     private int nConstSprites;
     private int nDetonSprites;
+    private boolean podeAtacar;
 
-    Propriedades(Class tipo, Dimensao tamanho, Dimensao tamanhoBase, int velocidade, int raioVisao, int hp, int nConstSprites, int nDetonSprites) {
+    Propriedades(Class tipo, Dimensao tamanho, Dimensao tamanhoBase, int velocidade, int raioVisao, int hp, int nConstSprites, int nDetonSprites, boolean podeAtacar) {
         this.tipo = tipo;
         this.tamanho = tamanho;
         this.tamanhoBase = tamanhoBase;
@@ -29,6 +30,7 @@ public enum Propriedades {
         this.hp = hp;
         this.nConstSprites = nConstSprites;
         this.nDetonSprites = nDetonSprites;
+        this.podeAtacar = podeAtacar;
     }
 
     public Class getTipo() {
@@ -98,4 +100,9 @@ public enum Propriedades {
     public int getnDetonSprites() {
         return nDetonSprites;
     }
+
+    public boolean podeAtacar() {
+        return podeAtacar;
+    }
+    
 }

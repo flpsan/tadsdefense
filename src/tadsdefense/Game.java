@@ -7,6 +7,7 @@ import entidades.Humano;
 import entidades.Pedreiro;
 import entidades.Propriedades;
 import entidades.Time;
+import gerentes.GerenteAnimacao;
 import gerentes.GerenteMapa;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -106,8 +107,8 @@ public class Game extends BasicGame {
                 }
             }
         }
-        
-        if (input.isMousePressed(2)){
+
+        if (input.isMousePressed(2)) {
             int xclique = input.getMouseX();
             int yclique = input.getMouseY();
             MapCell cell = GerenteMapa.getCell(GerenteMapa.getTileLx(xclique), GerenteMapa.getTileLy(yclique));
@@ -166,7 +167,6 @@ public class Game extends BasicGame {
                 }
             }
         }
-
 
         if (boxSelecao != null) {
             grphcs.draw(boxSelecao);

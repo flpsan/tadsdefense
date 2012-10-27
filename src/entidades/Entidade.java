@@ -1,5 +1,6 @@
 package entidades;
 
+import gerentes.GerenteAnimacao;
 import gerentes.GerenteBatalha;
 import gerentes.GerenteMapa;
 import gerentes.GerenteMovimento;
@@ -8,6 +9,7 @@ import tadsdefense.MapCell;
 
 public abstract class Entidade {
 
+    private GerenteAnimacao gerenteAnimacao;
     private GerenteBatalha gerenteBatalha;
     private GerenteMovimento gerenteMov;
     private MapCell currentCell;
@@ -313,5 +315,13 @@ public abstract class Entidade {
     
     public double getHpPercent(){
         return (double)getHp()/(double)getHpMax();
+    }
+
+    public GerenteAnimacao getGerenteAnimacao() {
+        return gerenteAnimacao;
+    }
+
+    public void setGerenteAnimacao(GerenteAnimacao gerenteAnimacao) {
+        this.gerenteAnimacao = gerenteAnimacao;
     }
 }

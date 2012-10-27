@@ -9,14 +9,14 @@ import util.Util;
 
 public class Humano extends Entidade {
 
-    private GerenteAnimacao gerenteAnimacao;
+    GerenteAnimacao gerenteAnimacao;
 
     public Humano(Propriedades propriedades, int lx, int ly, Time time) throws SlickException {
         super(propriedades, lx, ly, false, time, true);
-        gerenteAnimacao = new GerenteAnimacao(Util.geraHumanoAnims(propriedades.getDirSpriteOriginal()));
+        gerenteAnimacao = new GerenteAnimacao(this, Util.geraHumanoAnims(propriedades.getDirSpriteOriginal()));
         gerenteAnimacao.setHitAnim(new Animation(new SpriteSheet("res/humano/hitHumano.png", 15, 15), 150));
+        super.setGerenteAnimacao(gerenteAnimacao);
     }
-    
     private int lastDir;
     private boolean wasMoving;
 
@@ -32,7 +32,7 @@ public class Humano extends Entidade {
             } else if (wasMoving != isMoving) {
                 gerenteAnimacao.play();
             }
-        } else if (getGerenteBatalha().isDoLadoDoAlvo()) {
+        } else if (getGerenteBatalha().podeAtacar()) {
             gerenteAnimacao.playAtaca(GerenteMapa.viradoPara(this, getGerenteBatalha().getAtacando()));
         }
         wasMoving = isMoving;
@@ -48,11 +48,10 @@ public class Humano extends Entidade {
     @Override
     public void draw() {
         gerenteAnimacao.getAnimation().draw(getX(), getY());
-        if (gerenteAnimacao.getHitAnim()!=null && !gerenteAnimacao.getHitAnim().isStopped()) {
+        if (gerenteAnimacao.getHitAnim() != null && !gerenteAnimacao.getHitAnim().isStopped()) {
             gerenteAnimacao.getHitAnim().draw(getX(), getY());
         }
     }
-
 
     @Override
     public void ataca(Entidade e) {

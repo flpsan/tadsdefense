@@ -4,9 +4,11 @@
  */
 package util;
 
+import java.awt.Point;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Rectangle;
 
 /**
@@ -31,9 +33,13 @@ public class Util {
         Animation esquerdaf = new Animation(spritesheet, 0, 7, 1, 7, true, 100, true);
         return new Animation[]{norte, direita, sul, esquerda, nortef, direitaf, sulf, esquerdaf};
     }
-    
-    public static boolean contains(Rectangle rA, Rectangle rB){
-        return (rA.getMinX()<=rB.getMinX() && rA.getMaxX()>=rB.getMaxX() && rA.getMinY()<=rB.getMinY() && rA.getMaxY()>=rB.getMaxY());
-        
+
+    public static boolean contains(Rectangle rA, Rectangle rB) {
+        return (rA.getMinX() <= rB.getMinX() && rA.getMaxX() >= rB.getMaxX() && rA.getMinY() <= rB.getMinY() && rA.getMaxY() >= rB.getMaxY());
+    }
+
+    public static boolean contains(Circle c, int x, int y) {
+        double dist = Point.distance(x, y, c.getCenterX(), c.getCenterY());
+        return dist <= c.getRadius();
     }
 }
