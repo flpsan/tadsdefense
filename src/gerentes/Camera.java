@@ -1,6 +1,5 @@
 package gerentes;
 
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.geom.Rectangle;
 import util.Const;
 
@@ -11,7 +10,7 @@ public class Camera {
     Rectangle camDeslocInf;
     Rectangle camDeslocEsq;
 
-    public Camera(GameContainer gc) {
+    public Camera() {
         int d = Const.CAMERA_DESLOC_ALT_LARG;
         int altTelaJogo = Const.ALTURA_TELA - Const.MENUINF_ALTURA - Const.MENUSUP_ALTURA;
         int yInf = Const.ALTURA_TELA - Const.MENUINF_ALTURA - d;

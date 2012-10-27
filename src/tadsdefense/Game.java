@@ -2,30 +2,23 @@ package tadsdefense;
 
 import entidades.Construcao;
 import entidades.Entidade;
-import entidades.EntidadeNeutra;
 import entidades.Humano;
 import entidades.Pedreiro;
 import entidades.Propriedades;
 import entidades.Time;
 import gerentes.Camera;
-import gerentes.GerenteAnimacao;
-import gerentes.Mapa;
 import gerentes.GerenteInput;
 import gerentes.GerenteRenderizacao;
+import gerentes.Mapa;
 import gerentes.Menu;
 import gerentes.Selecao;
-import java.util.ArrayList;
 import java.util.Iterator;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Rectangle;
 import util.Const;
-import util.Util;
 
 public class Game extends BasicGame {
 
@@ -49,9 +42,9 @@ public class Game extends BasicGame {
 
     @Override
     public void init(GameContainer gc) throws SlickException {
-        camera = new Camera(gc);
-        menu = new Menu(gc);
+        camera = new Camera();
         selecao = new Selecao();
+        menu = new Menu(selecao);
         gerenteRenderizacao = new GerenteRenderizacao(camera, selecao, menu);
         gerenteInput = new GerenteInput(camera, selecao, menu);
 

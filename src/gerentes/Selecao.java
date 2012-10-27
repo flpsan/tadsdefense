@@ -95,6 +95,10 @@ public class Selecao {
     public boolean isHumanosSelecionados() {
         return !humanosSelecionados.isEmpty();
     }
+    
+    public boolean isHumanoSelecionado() {
+        return humanosSelecionados.size()==1;
+    }
 
     public boolean isConstrucaoSelecionada() {
         return getConstrucaoSelecionada() != null;
@@ -119,5 +123,9 @@ public class Selecao {
 
     public Construcao getConstrucaoSelecionada() {
         return construcaoSelecionada;
+    }
+
+    public Humano getHumanoSelecionado() {
+        return humanosSelecionados.get(0);
     }
 }
