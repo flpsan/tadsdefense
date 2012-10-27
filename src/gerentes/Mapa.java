@@ -354,8 +354,8 @@ public class Mapa {
     public static void moveMapa(int deltax, int deltay) {
         int novoX = getDx() + deltax;
         int novoY = getDy() + deltay;
-        
-        if (novoX<=0 && novoX>=-(tiledMap.getWidth()*Const.TILE_WIDTH-Const.LARGURA_TELA) && novoY<=Const.MENUSUP_ALTURA && novoY>=-(tiledMap.getHeight()*Const.TILE_HEIGHT-Const.ALTURA_TELA+Const.MENUINF_ALTURA)) { //Verificação dos limites de deslocamento do mapa
+
+        if (novoX <= 0 && novoX >= -(tiledMap.getWidth() * Const.TILE_WIDTH - Const.LARGURA_TELA) && novoY <= Const.MENUSUP_ALTURA && novoY >= -(tiledMap.getHeight() * Const.TILE_HEIGHT - Const.ALTURA_TELA + Const.MENUINF_ALTURA)) { //Verificação dos limites de deslocamento do mapa
             deslocamentoMapa.setX(novoX);
             deslocamentoMapa.setY(novoY);
             for (MapCell[] m : map) {
@@ -374,6 +374,16 @@ public class Mapa {
     }
 
     public static MapCell getCell2(int x, int y) {
-        return getCell(getTileLx(x),getTileLy(y));
+        return getCell(getTileLx(x), getTileLy(y));
+    }
+
+    public static Entidade getEntidadeSelecionada(int x, int y) {
+        MapCell cell = getCell2(x, y);
+        for (Entidade e : cell.getEntidades()) {
+            if (e.getBox().contains(x, y)) {
+                return e;
+            }
+        }
+        return null;
     }
 }

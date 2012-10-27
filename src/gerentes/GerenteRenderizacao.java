@@ -71,6 +71,8 @@ public class GerenteRenderizacao {
             for (Humano h : selecao.getHumanosSelecionados()) {
                 draw(g, h.getBox(), Color.yellow);
             }
+        } else if (selecao.isConstrucaoSelecionada()) {
+            draw(g, selecao.getConstrucaoSelecionada().getBox(), Color.yellow);
         }
     }
 

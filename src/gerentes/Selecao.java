@@ -13,16 +13,17 @@ public class Selecao {
     private Rectangle boxSelecao;
     private Construcao construcaoSelecionada;
     private Entidade entidadeFocada;
-    
-    
-    public Selecao(){
+
+    public Selecao() {
         humanosSelecionados = new ArrayList();
     }
 
     public void botaoEsquerdo(boolean botaoEsquerdoDown, int x, int y) {
         if (botaoEsquerdoDown) {
-            if (getBoxSelecao() == null) {
+            if (boxSelecao == null) {
                 boxSelecao = new Rectangle(x, y, 0, 0);
+                humanosSelecionados.clear();
+                construcaoSelecionada = null;
             } else {
                 int w = (int) (x - getBoxSelecao().getX());
                 int h = (int) (y - getBoxSelecao().getY());
@@ -30,8 +31,19 @@ public class Selecao {
                 getBoxSelecao().setHeight(h);
             }
         } else {
-            if (getBoxSelecao() != null) {
-                humanosSelecionados = Mapa.getHumanosSelecionados(getBoxSelecao());
+            if (boxSelecao != null) {
+                if (boxSelecao.getWidth() < 10) {
+                    Entidade e = Mapa.getEntidadeSelecionada((int) boxSelecao.getCenterX(), (int) boxSelecao.getCenterY());
+                    if (e != null) {
+                        if (e instanceof Construcao) {
+                            construcaoSelecionada = (Construcao) e;
+                        } else if (e instanceof Humano) {
+                            humanosSelecionados.add((Humano) e);
+                        }
+                    }
+                } else {
+                    humanosSelecionados = Mapa.getHumanosSelecionados(boxSelecao);
+                }
                 boxSelecao = null;
             }
         }
@@ -41,15 +53,19 @@ public class Selecao {
         if (botaoDireitoDown && isAlgoSelecionado()) {
             MapCell cell = Mapa.getCell(Mapa.getTileLx(x), Mapa.getTileLy(y));
             Entidade e = getEntidadeClicada(cell, x, y);
-            for (Humano h : humanosSelecionados) {
-                if (e == null) {
-                    h.desataca();
-                    h.goTo(cell);
-                } else {
-                    if (!h.equals(e)) {
-                        h.ataca(e);
+            if (isHumanosSelecionados()) {
+                for (Humano h : humanosSelecionados) {
+                    if (e == null) {
+                        h.desataca();
+                        h.goTo(cell);
+                    } else {
+                        if (!h.equals(e)) {
+                            h.ataca(e);
+                        }
                     }
                 }
+            } else if (isConstrucaoSelecionada()) {
+                construcaoSelecionada = null;
             }
         }
     }
@@ -75,21 +91,21 @@ public class Selecao {
     public Rectangle getBoxSelecao() {
         return boxSelecao;
     }
-    
-    public boolean isHumanosSelecionados(){
+
+    public boolean isHumanosSelecionados() {
         return !humanosSelecionados.isEmpty();
     }
-    
-    public boolean isConstrucaoSelecionada(){
-        return construcaoSelecionada != null;
+
+    public boolean isConstrucaoSelecionada() {
+        return getConstrucaoSelecionada() != null;
     }
 
     public void setFoco(int x, int y) {
         MapCell cell = Mapa.getCell2(x, y);
         Entidade entidadeFocada = null;
-        if (cell!=null){
-            for(Entidade e : cell.getEntidades()){
-                if (e.getBox().contains(x,y)){
+        if (cell != null) {
+            for (Entidade e : cell.getEntidades()) {
+                if (e.getBox().contains(x, y)) {
                     entidadeFocada = e;
                 }
             }
@@ -99,5 +115,9 @@ public class Selecao {
 
     public Entidade getEntidadeFocada() {
         return entidadeFocada;
+    }
+
+    public Construcao getConstrucaoSelecionada() {
+        return construcaoSelecionada;
     }
 }

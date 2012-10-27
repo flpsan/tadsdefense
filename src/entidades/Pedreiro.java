@@ -12,14 +12,15 @@ public class Pedreiro extends Humano {
         gerenteConstrucao = new GerenteConstrucao(this);
     }
 
-    
-    public void update(){
+    public void update() {
         super.update();
         gerenteConstrucao.update();
     }
-    
+
     public void ataca(Entidade e) {
-        gerenteConstrucao.alvoConstrucao = (Construcao)e;
+        if (e instanceof Construcao) {
+            gerenteConstrucao.alvoConstrucao = (Construcao) e;
+        }
     }
 
     public void desataca() {

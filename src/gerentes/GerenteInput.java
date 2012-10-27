@@ -27,7 +27,7 @@ public class GerenteInput {
         boolean botaoDireitoDown = input.isMouseButtonDown(1);
         selecao.botaoEsquerdo(botaoEsquerdoDown, x, y);
         selecao.botaoDireito(botaoDireitoDown, x, y);
-        selecao.setFoco(x,y);
+        selecao.setFoco(x, y);
         camera.update(x, y);
     }
 }
