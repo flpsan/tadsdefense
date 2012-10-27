@@ -11,10 +11,6 @@ import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Rectangle;
 
-/**
- *
- * @author Felipe
- */
 public class Util {
     public static final int HUMANO_WIDTH = 12, HUMANO_HEIGHT = 26;
 

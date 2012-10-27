@@ -13,13 +13,11 @@ public class Camera {
 
     public Camera(GameContainer gc) {
         int d = Const.CAMERA_DESLOC_ALT_LARG;
-        int screenW = gc.getWidth();
-        int screenH = gc.getHeight();
-        int altTelaJogo = screenH - Const.MENUINF_ALTURA - Const.MENUSUP_ALTURA;
-        int yInf = screenH - Const.MENUINF_ALTURA;
-        camDeslocSup = new Rectangle(0, Const.MENUSUP_ALTURA, screenW, d);
-        camDeslocDir = new Rectangle(screenW - d, Const.MENUSUP_ALTURA + d, d, altTelaJogo - d);
-        camDeslocInf = new Rectangle(0, yInf, screenW, d);
+        int altTelaJogo = Const.ALTURA_TELA - Const.MENUINF_ALTURA - Const.MENUSUP_ALTURA;
+        int yInf = Const.ALTURA_TELA - Const.MENUINF_ALTURA - d;
+        camDeslocSup = new Rectangle(0, Const.MENUSUP_ALTURA, Const.LARGURA_TELA, d);
+        camDeslocDir = new Rectangle(Const.LARGURA_TELA - d, Const.MENUSUP_ALTURA + d, d, altTelaJogo - d);
+        camDeslocInf = new Rectangle(0, yInf, Const.LARGURA_TELA, d);
         camDeslocEsq = new Rectangle(0, Const.MENUSUP_ALTURA + d, d, altTelaJogo - d);
     }
 

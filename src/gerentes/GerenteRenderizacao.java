@@ -38,6 +38,7 @@ public class GerenteRenderizacao {
         draw(g, selecao.getBoxSelecao());
         drawEntidadeFocada(g);
         drawEntidadesSelecionadas(g);
+        drawMenus(g);
     }
 
     private void draw(Graphics g, Shape s, Color c) {
@@ -71,5 +72,9 @@ public class GerenteRenderizacao {
                 draw(g, h.getBox(), Color.yellow);
             }
         }
+    }
+
+    private void drawMenus(Graphics g) {
+        menu.draw(g);
     }
 }
